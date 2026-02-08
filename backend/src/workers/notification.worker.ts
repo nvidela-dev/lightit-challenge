@@ -1,7 +1,7 @@
 import 'dotenv/config';
-import { createWorker } from '../config/queue.js';
-import { sendConfirmationEmail } from '../services/notification/channels/email.channel.js';
-import type { NotificationJob } from '../services/notification/types.js';
+import { createWorker } from '@config/queue.js';
+import { sendConfirmationEmail } from '@services/notification/channels/email.channel.js';
+import type { NotificationJob } from '@services/notification/types.js';
 
 const jobHandlers: Record<
   NotificationJob['type'],

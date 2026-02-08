@@ -1,4 +1,4 @@
-import { createQueue } from '../../config/queue.js';
+import { createQueue } from '@config/queue.js';
 import type { NotificationJob } from './types.js';
 
 export const notificationQueue = createQueue<NotificationJob>('notifications');

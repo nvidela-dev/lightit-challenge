@@ -1,5 +1,5 @@
 import type { Request, Response, NextFunction } from 'express';
-import { AppError } from '../shared/errors.js';
+import { AppError } from '@shared/errors.js';
 import { Prisma } from '@prisma/client';
 import { MulterError } from 'multer';
 

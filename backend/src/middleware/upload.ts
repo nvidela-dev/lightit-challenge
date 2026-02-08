@@ -1,7 +1,7 @@
 import multer from 'multer';
 import path from 'path';
 import { randomUUID } from 'crypto';
-import { ValidationError } from '../shared/errors.js';
+import { ValidationError } from '@shared/errors.js';
 
 const UPLOAD_DIR = path.join(process.cwd(), 'uploads');
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB

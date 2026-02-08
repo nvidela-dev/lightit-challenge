@@ -12,18 +12,18 @@ const mockPrisma = {
   },
 };
 
-vi.mock('../../config/database.js', () => ({
+vi.mock('@config/database.js', () => ({
   prisma: mockPrisma,
 }));
 
 // Mock notification queue
 const mockDispatchConfirmationEmail = vi.fn();
-vi.mock('../../services/notification/notification.queue.js', () => ({
+vi.mock('@services/notification/notification.queue.js', () => ({
   dispatchConfirmationEmail: mockDispatchConfirmationEmail,
 }));
 
 // Import app after mocking
-const { createApp } = await import('../../app.js');
+const { createApp } = await import('@/app.js');
 const app = createApp();
 
 const samplePatient = {

@@ -1,6 +1,6 @@
-import { prisma } from '../../config/database.js';
-import { ConflictError } from '../../shared/errors.js';
-import { dispatchConfirmationEmail } from '../../services/notification/notification.queue.js';
+import { prisma } from '@config/database.js';
+import { ConflictError } from '@shared/errors.js';
+import { dispatchConfirmationEmail } from '@services/notification/notification.queue.js';
 import type { CreatePatientInput } from './patient.schema.js';
 
 const patientSelect = {
