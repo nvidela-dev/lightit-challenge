@@ -1,4 +1,4 @@
-.PHONY: help install dev up down logs build clean migrate seed mail db-reset
+.PHONY: help install dev up down logs build clean migrate seed mail db-reset test
 
 # Default target
 help:
@@ -17,6 +17,7 @@ help:
 	@echo "  make db-reset   - Reset database (drop, migrate, seed)"
 	@echo ""
 	@echo "  make mail       - Open Mailpit UI in browser"
+	@echo "  make test       - Run backend tests"
 	@echo ""
 
 # Install dependencies
@@ -88,3 +89,7 @@ db-reset:
 mail:
 	@echo "Opening Mailpit at http://localhost:8025"
 	@open http://localhost:8025 2>/dev/null || xdg-open http://localhost:8025 2>/dev/null || echo "Please open http://localhost:8025 in your browser"
+
+# Run tests
+test:
+	cd backend && npm test

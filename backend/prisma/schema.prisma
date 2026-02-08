@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Patient {
+  id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  fullName    String   @db.VarChar(255)
+  email       String   @unique @db.VarChar(255)
+  phoneCode   String   @db.VarChar(10)
+  phoneNumber String   @db.VarChar(20)
+  documentUrl String   @db.VarChar(500)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
