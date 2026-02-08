@@ -1,4 +1,5 @@
-.PHONY: help install dev up down logs build clean migrate seed mail db-reset test
+.PHONY: help install dev up down logs build clean migrate seed mail db-reset test worker \
+        api-health api-patients api-create-patient
 
 # Default target
 help:
@@ -18,6 +19,12 @@ help:
 	@echo ""
 	@echo "  make mail       - Open Mailpit UI in browser"
 	@echo "  make test       - Run backend tests"
+	@echo "  make worker     - Start notification worker"
+	@echo ""
+	@echo "API Testing:"
+	@echo "  make api-health         - Check API health endpoint"
+	@echo "  make api-patients       - List all patients"
+	@echo "  make api-create-patient - Create a test patient"
 	@echo ""
 
 # Install dependencies
@@ -33,6 +40,7 @@ dev: up-services
 	@echo "Mailpit: http://localhost:8025"
 	@trap 'make down-services' EXIT; \
 	(cd backend && npm run dev) & \
+	(cd backend && npm run worker:dev) & \
 	(cd frontend && npm run dev) & \
 	wait
 
@@ -93,3 +101,29 @@ mail:
 # Run tests
 test:
 	cd backend && npm test
+
+# Start notification worker
+worker:
+	cd backend && npm run worker:dev
+
+# =============================================================================
+# API Testing
+# =============================================================================
+
+# Check API health
+api-health:
+	@curl -s http://localhost:3001/api/health | jq .
+
+# List all patients
+api-patients:
+	@curl -s http://localhost:3001/api/patients | jq .
+
+# Create a test patient (requires a test.jpg in backend/uploads/)
+api-create-patient:
+	@echo "Creating test patient..."
+	@curl -s -X POST http://localhost:3001/api/patients \
+		-F "fullName=Test Patient" \
+		-F "email=test.$(shell date +%s)@gmail.com" \
+		-F "phoneCode=+1" \
+		-F "phoneNumber=5551234567" \
+		-F "document=@backend/uploads/test-image.jpg" | jq .

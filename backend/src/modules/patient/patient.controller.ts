@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import * as patientService from './patient.service.js';
-import { ValidationError } from '../../shared/errors.js';
-import { formatZodErrors } from '../../shared/validation.js';
+import { ValidationError } from '@shared/errors.js';
+import { formatZodErrors } from '@shared/validation.js';
 import { createPatientSchema } from './patient.schema.js';
 
 export const getPatients = (

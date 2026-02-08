@@ -1,5 +1,6 @@
-import { prisma } from '../../config/database.js';
-import { ConflictError } from '../../shared/errors.js';
+import { prisma } from '@config/database.js';
+import { ConflictError } from '@shared/errors.js';
+import { dispatchConfirmationEmail } from '@services/notification/notification.queue.js';
 import type { CreatePatientInput } from './patient.schema.js';
 
 const patientSelect = {
@@ -34,4 +35,11 @@ const ensureEmailNotTaken = (email: string) =>
 export const createPatient = (input: CreatePatientInput, documentUrl: string) =>
   ensureEmailNotTaken(input.email)
     .then(() => prisma.patient.create({ data: { ...input, documentUrl }, select: patientSelect }))
-    .then(formatPatient);
+    .then((patient) => {
+      dispatchConfirmationEmail({
+        patientId: patient.id,
+        email: patient.email,
+        fullName: patient.fullName,
+      });
+      return formatPatient(patient);
+    });

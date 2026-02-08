@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { upload } from '../../middleware/upload.js';
+import { upload } from '@/middleware/upload.js';
 import * as patientController from './patient.controller.js';
 
 const router = Router();
