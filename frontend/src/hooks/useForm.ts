@@ -1,0 +1,89 @@
+import { useState, useCallback, type ChangeEvent, type FormEvent } from 'react';
+import type { ZodSchema, ZodError } from 'zod';
+
+type UseFormOptions<T extends Record<string, unknown>> = {
+  initialValues: T;
+  schema: ZodSchema<T>;
+  onSubmit: (values: T) => Promise<void>;
+};
+
+const formatZodErrors = <T extends Record<string, unknown>>(
+  error: ZodError<T>
+): Partial<Record<keyof T, string>> =>
+  error.issues.reduce(
+    (acc, issue) => ({
+      ...acc,
+      [issue.path[0] as keyof T]: issue.message,
+    }),
+    {} as Partial<Record<keyof T, string>>
+  );
+
+export const useForm = <T extends Record<string, unknown>>({
+  initialValues,
+  schema,
+  onSubmit,
+}: UseFormOptions<T>) => {
+  const [values, setValues] = useState<T>(initialValues);
+  const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
+  const [touched, setTouched] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const validate = useCallback(
+    (data: T): Partial<Record<keyof T, string>> => {
+      const result = schema.safeParse(data);
+      return result.success ? {} : formatZodErrors(result.error);
+    },
+    [schema]
+  );
+
+  const handleChange = useCallback(
+    (field: keyof T) => (e: ChangeEvent<HTMLInputElement>) => {
+      const newValues = { ...values, [field]: e.target.value };
+      setValues(newValues);
+      if (touched) setErrors(validate(newValues));
+    },
+    [values, touched, validate]
+  );
+
+  const setFieldValue = useCallback(
+    (field: keyof T, value: unknown) => {
+      const newValues = { ...values, [field]: value };
+      setValues(newValues);
+      if (touched) setErrors(validate(newValues));
+    },
+    [values, touched, validate]
+  );
+
+  const handleSubmit = useCallback(
+    (e: FormEvent) => {
+      e.preventDefault();
+      const validationErrors = validate(values);
+      setTouched(true);
+      setErrors(validationErrors);
+
+      if (Object.keys(validationErrors).length === 0) {
+        setIsSubmitting(true);
+        onSubmit(values).finally(() => setIsSubmitting(false));
+      }
+    },
+    [values, validate, onSubmit]
+  );
+
+  const reset = useCallback(() => {
+    setValues(initialValues);
+    setErrors({});
+    setTouched(false);
+    setIsSubmitting(false);
+  }, [initialValues]);
+
+  return {
+    values,
+    errors,
+    touched,
+    isSubmitting,
+    handleChange,
+    handleSubmit,
+    setFieldValue,
+    reset,
+  };
+};
