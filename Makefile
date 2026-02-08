@@ -1,4 +1,4 @@
-.PHONY: help install dev up down logs build clean migrate seed mail db-reset test
+.PHONY: help install dev up down logs build clean migrate seed mail db-reset test worker
 
 # Default target
 help:
@@ -18,6 +18,7 @@ help:
 	@echo ""
 	@echo "  make mail       - Open Mailpit UI in browser"
 	@echo "  make test       - Run backend tests"
+	@echo "  make worker     - Start notification worker"
 	@echo ""
 
 # Install dependencies
@@ -33,6 +34,7 @@ dev: up-services
 	@echo "Mailpit: http://localhost:8025"
 	@trap 'make down-services' EXIT; \
 	(cd backend && npm run dev) & \
+	(cd backend && npm run worker:dev) & \
 	(cd frontend && npm run dev) & \
 	wait
 
@@ -93,3 +95,7 @@ mail:
 # Run tests
 test:
 	cd backend && npm test
+
+# Start notification worker
+worker:
+	cd backend && npm run worker:dev

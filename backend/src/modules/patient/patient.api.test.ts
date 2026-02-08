@@ -16,6 +16,12 @@ vi.mock('../../config/database.js', () => ({
   prisma: mockPrisma,
 }));
 
+// Mock notification queue
+const mockDispatchConfirmationEmail = vi.fn();
+vi.mock('../../services/notification/notification.queue.js', () => ({
+  dispatchConfirmationEmail: mockDispatchConfirmationEmail,
+}));
+
 // Import app after mocking
 const { createApp } = await import('../../app.js');
 const app = createApp();
@@ -116,7 +122,7 @@ describe('POST /api/patients', () => {
     expect(response.body.errors.email).toContain('already exists');
   });
 
-  it('creates patient with valid data', async () => {
+  it('creates patient and dispatches confirmation email', async () => {
     mockPrisma.patient.findUnique.mockResolvedValue(null);
     mockPrisma.patient.create.mockResolvedValue(samplePatient);
 
@@ -132,6 +138,11 @@ describe('POST /api/patients', () => {
     expect(response.body.data).toMatchObject({
       fullName: 'John Doe',
       email: 'john.doe@gmail.com',
+    });
+    expect(mockDispatchConfirmationEmail).toHaveBeenCalledWith({
+      patientId: samplePatient.id,
+      email: samplePatient.email,
+      fullName: samplePatient.fullName,
     });
   });
 });
