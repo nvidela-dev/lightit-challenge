@@ -1,3 +1,5 @@
+import { ChevronLeftIcon, ChevronRightIcon } from './icons';
+
 type PaginationProps = {
   currentPage: number;
   totalPages: number;
@@ -52,15 +54,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
         className={`${baseButtonClass} ${currentPage === 1 ? disabledClass : inactiveClass}`}
         aria-label="Previous page"
       >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path
-            d="M10 12L6 8l4-4"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <ChevronLeftIcon width="16" height="16" />
       </button>
 
       {getPageNumbers().map((page) =>
@@ -91,15 +85,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
         className={`${baseButtonClass} ${currentPage === effectiveTotalPages ? disabledClass : inactiveClass}`}
         aria-label="Next page"
       >
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-          <path
-            d="M6 4l4 4-4 4"
-            stroke="currentColor"
-            strokeWidth="2"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
+        <ChevronRightIcon width="16" height="16" />
       </button>
     </nav>
   );

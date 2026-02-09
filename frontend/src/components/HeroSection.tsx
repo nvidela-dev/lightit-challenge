@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import heroImage from '../assets/doctor-stock.jpg';
+import { HeartbeatIcon } from './icons';
 
 type HeroSectionProps = {
   isCollapsed: boolean;
@@ -47,18 +48,18 @@ export const HeroSection = ({ isCollapsed, onCollapseChange }: HeroSectionProps)
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-slate-900/60 to-transparent" />
         <div className="relative h-full max-w-7xl mx-auto px-6 flex items-center">
           <div className="relative glass-header rounded-2xl px-8 py-6 max-w-lg shadow-2xl">
-            <div className="absolute -bottom-3 left-8 w-6 h-6 glass-header rotate-45" />
-            <svg
+            <div
+              className="absolute -bottom-4 left-8 w-0 h-0"
+              style={{
+                borderLeft: '14px solid transparent',
+                borderRight: '14px solid transparent',
+                borderTop: '18px solid rgba(112, 131, 168, 0.35)',
+              }}
+            />
+            <HeartbeatIcon
               className="absolute top-4 right-4 w-10 h-10 text-white/20"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
               strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-            </svg>
+            />
             <h1 className="text-3xl md:text-4xl font-bold text-white mb-2 tracking-tight">
               Welcome, Doctor
             </h1>

@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import { Button } from '../../components/Button';
 import { EmptyState } from '../../components/EmptyState';
 import { Pagination } from '../../components/Pagination';
+import { PlusIcon, ChevronUpIcon } from '../../components/icons';
 import { usePatients } from './hooks/usePatients';
 import { PatientList } from './components/PatientList';
 import { RegistrationModal } from './components/RegistrationModal';
@@ -101,21 +102,11 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
                 className="flex items-center justify-center w-5 h-5 rounded-full bg-slate-200/60 hover:bg-slate-300/80 text-slate-500 transition-all duration-300"
                 aria-label={isHeroCollapsed ? 'Show banner' : 'Hide banner'}
               >
-                <svg
+                <ChevronUpIcon
                   width="10"
                   height="10"
-                  viewBox="0 0 10 10"
-                  fill="none"
                   className={`transition-transform duration-300 ${isHeroCollapsed ? 'rotate-180' : ''}`}
-                >
-                  <path
-                    d="M2 6l3-3 3 3"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
+                />
               </button>
               <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-2 py-1.5 bg-slate-800 text-white text-[10px] rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-10">
                 {isHeroCollapsed ? 'Collapse' : 'Expand'}
@@ -128,9 +119,7 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
           </div>
           <Button onClick={handleOpenModal}>
             <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white/20">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                <path d="M6 2v8M2 6h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-              </svg>
+              <PlusIcon width="12" height="12" />
             </span>
             Add Patient
           </Button>
