@@ -1,6 +1,5 @@
 import { useState, useCallback } from 'react';
 import type { Patient } from '../../types';
-import styles from './PatientCard.module.css';
 
 type PatientCardProps = {
   patient: Patient;
@@ -25,20 +24,24 @@ export const PatientCard = ({ patient }: PatientCardProps) => {
 
   return (
     <article
-      className={`${styles.card} ${isExpanded ? styles.expanded : ''}`}
+      className="bg-white border border-slate-200 rounded-lg overflow-hidden cursor-pointer transition-all duration-150 hover:shadow-md hover:-translate-y-0.5"
       onClick={toggleExpand}
     >
-      <div className={styles.header}>
+      <div className="flex items-center gap-3 p-4">
         <img
           src={patient.documentUrl}
           alt={`${patient.fullName}'s document`}
-          className={styles.photo}
+          className="w-12 h-12 object-cover rounded-md flex-shrink-0"
         />
-        <div className={styles.info}>
-          <h3 className={styles.name}>{patient.fullName}</h3>
-          <p className={styles.date}>{formatDate(patient.createdAt)}</p>
+        <div className="flex-1 min-w-0">
+          <h3 className="text-[15px] font-semibold text-slate-900 truncate">{patient.fullName}</h3>
+          <p className="text-sm text-slate-500 mt-0.5">{formatDate(patient.createdAt)}</p>
         </div>
-        <span className={styles.chevron}>
+        <span
+          className={`flex items-center justify-center w-7 h-7 text-slate-400 transition-transform duration-250 ${
+            isExpanded ? 'rotate-180' : ''
+          }`}
+        >
           <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
             <path
               d="M6 8l4 4 4-4"
@@ -50,14 +53,18 @@ export const PatientCard = ({ patient }: PatientCardProps) => {
           </svg>
         </span>
       </div>
-      <div className={styles.details}>
-        <div className={styles.detailRow}>
-          <span className={styles.detailLabel}>Email</span>
-          <span className={styles.detailValue}>{patient.email}</span>
+      <div
+        className={`flex flex-col gap-2 overflow-hidden transition-all duration-250 ${
+          isExpanded ? 'max-h-24 opacity-100 px-4 pb-4' : 'max-h-0 opacity-0'
+        }`}
+      >
+        <div className="flex justify-between gap-3">
+          <span className="text-sm text-slate-500">Email</span>
+          <span className="text-sm text-slate-900 text-right">{patient.email}</span>
         </div>
-        <div className={styles.detailRow}>
-          <span className={styles.detailLabel}>Phone</span>
-          <span className={styles.detailValue}>
+        <div className="flex justify-between gap-3">
+          <span className="text-sm text-slate-500">Phone</span>
+          <span className="text-sm text-slate-900 text-right">
             {formatPhone(patient.phoneCode, patient.phoneNumber)}
           </span>
         </div>

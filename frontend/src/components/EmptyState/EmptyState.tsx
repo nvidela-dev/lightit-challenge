@@ -1,5 +1,4 @@
 import type { ReactNode } from 'react';
-import styles from './EmptyState.module.css';
 
 type EmptyStateProps = {
   title: string;
@@ -8,8 +7,8 @@ type EmptyStateProps = {
 };
 
 export const EmptyState = ({ title, description, action }: EmptyStateProps) => (
-  <div className={styles.container}>
-    <div className={styles.icon}>
+  <div className="flex flex-col items-center justify-center py-16 px-5 text-center">
+    <div className="text-slate-400 mb-4">
       <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
         <circle cx="32" cy="32" r="30" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
         <path
@@ -20,8 +19,8 @@ export const EmptyState = ({ title, description, action }: EmptyStateProps) => (
         />
       </svg>
     </div>
-    <h3 className={styles.title}>{title}</h3>
-    {description && <p className={styles.description}>{description}</p>}
-    {action && <div className={styles.action}>{action}</div>}
+    <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
+    {description && <p className="mt-2 text-sm text-slate-500 max-w-xs">{description}</p>}
+    {action && <div className="mt-6">{action}</div>}
   </div>
 );

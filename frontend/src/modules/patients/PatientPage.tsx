@@ -4,7 +4,6 @@ import { EmptyState } from '../../components/EmptyState';
 import { usePatients } from './hooks';
 import { PatientList } from './components/PatientList';
 import { RegistrationModal } from './components/RegistrationModal';
-import styles from './PatientPage.module.css';
 
 export const PatientPage = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -22,14 +21,16 @@ export const PatientPage = () => {
   const isEmpty = !isLoading && patients.length === 0;
 
   return (
-    <div className={styles.page}>
-      <header className={styles.header}>
-        <h1 className={styles.title}>Patient Registration</h1>
+    <div className="py-8">
+      <header className="flex items-center justify-between gap-4 mb-8 max-sm:flex-col max-sm:items-stretch">
+        <h1 className="text-3xl font-bold text-slate-900 max-sm:text-2xl max-sm:text-center">
+          Patient Registration
+        </h1>
         <Button onClick={handleOpenModal}>Add Patient</Button>
       </header>
 
       {isError && (
-        <div className={styles.error}>
+        <div className="p-4 mb-6 bg-red-600/10 border border-red-600 rounded-lg text-red-600 text-sm">
           Failed to load patients. Please try again later.
         </div>
       )}

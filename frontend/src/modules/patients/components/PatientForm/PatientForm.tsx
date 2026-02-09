@@ -5,7 +5,6 @@ import { FileDropzone } from '../../../../components/FileDropzone';
 import { Button } from '../../../../components/Button';
 import { useForm } from '../../../../hooks/useForm';
 import { createPatientSchema, type CreatePatientFormValues } from '../../schemas';
-import styles from './PatientForm.module.css';
 
 type PatientFormProps = {
   onSubmit: (formData: FormData) => Promise<void>;
@@ -57,7 +56,7 @@ export const PatientForm = ({ onSubmit, isSubmitting = false }: PatientFormProps
   const showFileError = touched && !file ? fileError : undefined;
 
   return (
-    <form onSubmit={handleSubmit} className={styles.form}>
+    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
       <FormField label="Full Name" error={errors.fullName}>
         <input
           type="text"
@@ -84,16 +83,12 @@ export const PatientForm = ({ onSubmit, isSubmitting = false }: PatientFormProps
         error={errors.phoneCode || errors.phoneNumber}
       />
 
-      <div className={styles.fileField}>
-        <label className={styles.fileLabel}>Document Photo</label>
-        <FileDropzone
-          value={file}
-          onChange={handleFileChange}
-          error={showFileError}
-        />
+      <div className="flex flex-col gap-1.5">
+        <label className="text-sm font-medium text-slate-900">Document Photo</label>
+        <FileDropzone value={file} onChange={handleFileChange} error={showFileError} />
       </div>
 
-      <Button type="submit" loading={isSubmitting} className={styles.submitButton}>
+      <Button type="submit" loading={isSubmitting} className="w-full mt-2">
         Register Patient
       </Button>
     </form>

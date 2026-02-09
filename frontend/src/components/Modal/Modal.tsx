@@ -1,6 +1,5 @@
 import { useEffect, useCallback, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import styles from './Modal.module.css';
 
 type ModalProps = {
   isOpen: boolean;
@@ -49,28 +48,43 @@ export const Modal = ({ isOpen, onClose, title, children, preventClose = false }
 
   return createPortal(
     <div
-      className={`${styles.backdrop} ${isClosing ? styles.closing : ''}`}
+      className={`fixed inset-0 bg-black/50 flex items-center justify-center p-5 z-50 ${
+        isClosing ? 'animate-fade-out' : 'animate-fade-in'
+      }`}
       onClick={handleClose}
       onAnimationEnd={handleAnimationEnd}
     >
       <div
-        className={`${styles.modal} ${isClosing ? styles.closing : ''}`}
+        className={`bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col ${
+          isClosing ? 'animate-scale-out' : 'animate-scale-in'
+        }`}
         onClick={(e) => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-title"
       >
-        <header className={styles.header}>
-          <h2 id="modal-title" className={styles.title}>{title}</h2>
+        <header className="flex items-center justify-between px-6 py-5 border-b border-slate-200">
+          <h2 id="modal-title" className="text-lg font-semibold text-slate-900">
+            {title}
+          </h2>
           {!preventClose && (
-            <button className={styles.closeButton} onClick={handleClose} aria-label="Close">
+            <button
+              className="flex items-center justify-center w-8 h-8 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-all duration-150"
+              onClick={handleClose}
+              aria-label="Close"
+            >
               <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path d="M15 5L5 15M5 5l10 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                <path
+                  d="M15 5L5 15M5 5l10 10"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                />
               </svg>
             </button>
           )}
         </header>
-        <div className={styles.content}>{children}</div>
+        <div className="p-6 overflow-y-auto">{children}</div>
       </div>
     </div>,
     modalRoot
