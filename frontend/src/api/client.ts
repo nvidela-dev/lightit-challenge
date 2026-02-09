@@ -1,5 +1,3 @@
-import { applyDebugSettings } from '../utils/debug';
-
 const API_BASE = '/api';
 
 export class ApiError extends Error {
@@ -12,8 +10,6 @@ export class ApiError extends Error {
 }
 
 export const request = async <T>(endpoint: string, options?: RequestInit): Promise<T> => {
-  await applyDebugSettings();
-
   const res = await fetch(`${API_BASE}${endpoint}`, options);
 
   if (res.ok) {
