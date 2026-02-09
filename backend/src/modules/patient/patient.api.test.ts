@@ -124,7 +124,7 @@ describe('POST /api/patients', () => {
     expect(response.body.errors).toHaveProperty('phoneNumber');
   });
 
-  it('returns 400 when email already exists', async () => {
+  it('returns 409 when email already exists', async () => {
     mockPrisma.patient.findUnique.mockResolvedValue({ id: 'existing' });
 
     const response = await request(app)
@@ -135,7 +135,7 @@ describe('POST /api/patients', () => {
       .field('phoneNumber', '1234567890')
       .attach('document', testImagePath);
 
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(409);
     expect(response.body.errors.email).toContain('already exists');
   });
 
