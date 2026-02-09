@@ -18,30 +18,15 @@ type PatientPageProps = {
 export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPageProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visualPage, setVisualPage] = useState(1);
-  const [isTransitioning, setIsTransitioning] = useState(false);
 
   const backendPage = isHeroCollapsed ? visualPage : Math.ceil(visualPage / 2);
   const { data, isLoading, isFetching, isError } = usePatients({ page: backendPage, limit: BACKEND_PAGE_SIZE });
   const showSkeleton = isLoading || isFetching;
 
-  // Animate when collapse state changes
+  // Reset to page 1 when collapse state changes
   useEffect(() => {
-    setIsTransitioning(true);
-    const timer = setTimeout(() => {
-      setVisualPage(1);
-      setIsTransitioning(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    setVisualPage(1);
   }, [isHeroCollapsed]);
-
-  // Reset transition when data finishes loading
-  useEffect(() => {
-    if (!isFetching) {
-      const timer = setTimeout(() => setIsTransitioning(false), 50);
-      return () => clearTimeout(timer);
-    }
-    return undefined;
-  }, [isFetching]);
 
   // Calculate visible patients based on collapsed state
   const visiblePatients = useMemo(() => {
@@ -74,8 +59,7 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
   }, []);
 
   const handlePageChange = useCallback((page: number) => {
-    setIsTransitioning(true);
-    setTimeout(() => setVisualPage(page), 300);
+    setVisualPage(page);
   }, []);
 
   const total = data?.pagination?.total ?? 0;
@@ -135,9 +119,7 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
 
         <div
           data-scroll-container
-          className={`transition-all duration-500 ease-out overflow-y-auto ${
-            isTransitioning ? 'opacity-0' : 'opacity-100'
-          } ${isHeroCollapsed ? 'h-[600px]' : 'h-[280px]'}`}
+          className={`overflow-y-auto ${isHeroCollapsed ? 'h-[600px]' : 'h-[280px]'}`}
         >
           {isEmpty ? (
             <EmptyState
@@ -159,11 +141,7 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
           )}
         </div>
 
-        <footer
-          className={`mt-auto pt-6 border-t border-slate-200/50 transition-opacity duration-300 ease-out ${
-            isTransitioning ? 'opacity-0' : 'opacity-100'
-          }`}
-        >
+        <footer className="mt-auto pt-6 border-t border-slate-200/50">
           <Pagination
             currentPage={visualPage}
             totalPages={totalVisualPages}
