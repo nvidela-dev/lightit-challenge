@@ -4,6 +4,7 @@ import { Button } from '../../../components/Button';
 import { PatientForm } from './PatientForm';
 import { useCreatePatient } from '../hooks/usePatients';
 import { ApiError } from '../../../api/client';
+import { useToast } from '../../../hooks/useToast';
 
 type RegistrationModalProps = {
   isOpen: boolean;
@@ -16,6 +17,7 @@ export const RegistrationModal = ({ isOpen, onClose }: RegistrationModalProps) =
   const [state, setState] = useState<ModalState>('form');
   const [errorMessage, setErrorMessage] = useState<string>('');
   const { mutateAsync } = useCreatePatient();
+  const { addToast } = useToast();
 
   const handleSubmit = useCallback(
     async (formData: FormData) => {
@@ -24,7 +26,10 @@ export const RegistrationModal = ({ isOpen, onClose }: RegistrationModalProps) =
 
       try {
         await mutateAsync(formData);
-        setState('success');
+        const email = formData.get('email') as string;
+        addToast({ type: 'success', message: `Email sent to ${email}` });
+        onClose();
+        setTimeout(() => setState('form'), 300);
       } catch (err) {
         const message =
           err instanceof ApiError
@@ -36,7 +41,7 @@ export const RegistrationModal = ({ isOpen, onClose }: RegistrationModalProps) =
         setState('error');
       }
     },
-    [mutateAsync]
+    [mutateAsync, addToast, onClose]
   );
 
   const handleClose = useCallback(() => {

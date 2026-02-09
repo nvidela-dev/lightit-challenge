@@ -3,3 +3,8 @@ export { PlusIcon } from './PlusIcon';
 export { ChevronUpIcon } from './ChevronUpIcon';
 export { ChevronLeftIcon } from './ChevronLeftIcon';
 export { ChevronRightIcon } from './ChevronRightIcon';
+export { CheckCircleIcon } from './CheckCircleIcon';
+export { XCircleIcon } from './XCircleIcon';
+export { InfoIcon } from './InfoIcon';
+export { WarningIcon } from './WarningIcon';
+export { XIcon } from './XIcon';
