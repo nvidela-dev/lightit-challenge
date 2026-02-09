@@ -26,7 +26,6 @@ export const useForm = <T extends Record<string, unknown>>({
   const [values, setValues] = useState<T>(initialValues);
   const [errors, setErrors] = useState<Partial<Record<keyof T, string>>>({});
   const [touched, setTouched] = useState(false);
-  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validate = useCallback(
     (data: T): Partial<Record<keyof T, string>> => {
@@ -53,27 +52,17 @@ export const useForm = <T extends Record<string, unknown>>({
       setErrors(validationErrors);
 
       if (Object.keys(validationErrors).length === 0) {
-        setIsSubmitting(true);
-        onSubmit(values).finally(() => setIsSubmitting(false));
+        onSubmit(values);
       }
     },
     [values, validate, onSubmit]
   );
 
-  const reset = useCallback(() => {
-    setValues(initialValues);
-    setErrors({});
-    setTouched(false);
-    setIsSubmitting(false);
-  }, [initialValues]);
-
   return {
     values,
     errors,
     touched,
-    isSubmitting,
     handleChange,
     handleSubmit,
-    reset,
   };
 };
