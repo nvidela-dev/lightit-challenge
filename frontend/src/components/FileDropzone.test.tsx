@@ -25,6 +25,7 @@ const ControlledDropzone = ({ maxSize }: { maxSize?: number }) => {
 describe('FileDropzone', () => {
   beforeEach(() => {
     URL.createObjectURL = vi.fn(() => 'blob:test');
+    URL.revokeObjectURL = vi.fn();
   });
 
   it('renders dropzone with instructions', () => {

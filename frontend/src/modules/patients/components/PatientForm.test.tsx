@@ -19,6 +19,7 @@ describe('PatientForm', () => {
   beforeEach(() => {
     mockOnSubmit.mockClear();
     URL.createObjectURL = vi.fn(() => 'blob:test');
+    URL.revokeObjectURL = vi.fn();
   });
 
   it('renders all form fields', () => {

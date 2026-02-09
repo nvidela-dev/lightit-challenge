@@ -1,4 +1,4 @@
-import { useState, useRef, useCallback, type DragEvent, type ChangeEvent } from 'react';
+import { useState, useRef, useCallback, useEffect, type DragEvent, type ChangeEvent } from 'react';
 
 type FileDropzoneProps = {
   value: File | null;
@@ -38,11 +38,17 @@ export const FileDropzone = ({
     (file: File) => {
       if (validateFile(file)) {
         onChange(null);
-        setPreview(null);
+        setPreview((prev) => {
+          if (prev) URL.revokeObjectURL(prev);
+          return null;
+        });
         return;
       }
       onChange(file);
-      setPreview(URL.createObjectURL(file));
+      setPreview((prev) => {
+        if (prev) URL.revokeObjectURL(prev);
+        return URL.createObjectURL(file);
+      });
     },
     [onChange, validateFile]
   );
@@ -77,9 +83,18 @@ export const FileDropzone = ({
 
   const handleRemove = useCallback(() => {
     onChange(null);
-    setPreview(null);
+    setPreview((prev) => {
+      if (prev) URL.revokeObjectURL(prev);
+      return null;
+    });
     if (inputRef.current) inputRef.current.value = '';
   }, [onChange]);
+
+  useEffect(() => {
+    return () => {
+      if (preview) URL.revokeObjectURL(preview);
+    };
+  }, [preview]);
 
   const handleClick = useCallback(() => {
     inputRef.current?.click();
