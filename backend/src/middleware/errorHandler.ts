@@ -5,57 +5,53 @@ import { MulterError } from 'multer';
 
 type ErrorResponse = { status: number; body: object };
 
-const prismaErrorMessages: Record<string, (err: Prisma.PrismaClientKnownRequestError) => ErrorResponse> = {
-  P2002: (err) => {
-    const field = ((err.meta?.target as string[]) ?? [])[0] ?? 'field';
+const isStringArray = (value: unknown): value is string[] =>
+  Array.isArray(value) && value.every((item) => typeof item === 'string');
+
+const handlePrismaError = (err: Prisma.PrismaClientKnownRequestError): ErrorResponse | null => {
+  if (err.code === 'P2002') {
+    const target = err.meta?.target;
+    const field = isStringArray(target) ? target[0] ?? 'field' : 'field';
     return {
       status: 400,
       body: { errors: { [field]: `A patient with this ${field} already exists` } },
     };
-  },
+  }
+  return null;
 };
 
 const multerErrorMessages: Record<string, string> = {
   LIMIT_FILE_SIZE: 'File size must be less than 5MB',
 };
 
-type ErrorMatcher = [(err: Error) => boolean, (err: Error) => ErrorResponse];
+const defaultError: ErrorResponse = { status: 500, body: { error: 'Internal server error' } };
 
-const errorMatchers: ErrorMatcher[] = [
-  [
-    (err): err is AppError => err instanceof AppError,
-    (err) => ({
-      status: (err as AppError).statusCode,
-      body: (err as AppError).errors
-        ? { errors: (err as AppError).errors }
-        : { error: err.message },
-    }),
-  ],
-  [
-    (err): err is Prisma.PrismaClientKnownRequestError =>
-      err instanceof Prisma.PrismaClientKnownRequestError &&
-      err.code in prismaErrorMessages,
-    (err) => prismaErrorMessages[(err as Prisma.PrismaClientKnownRequestError).code](
-      err as Prisma.PrismaClientKnownRequestError
-    ),
-  ],
-  [
-    (err): err is MulterError => err instanceof MulterError,
-    (err) => ({
+const resolveError = (err: Error): ErrorResponse => {
+  if (err instanceof AppError) {
+    return {
+      status: err.statusCode,
+      body: err.errors ? { errors: err.errors } : { error: err.message },
+    };
+  }
+
+  if (err instanceof Prisma.PrismaClientKnownRequestError) {
+    const result = handlePrismaError(err);
+    if (result) return result;
+  }
+
+  if (err instanceof MulterError) {
+    return {
       status: 400,
       body: {
         errors: {
-          document: multerErrorMessages[(err as MulterError).code] ?? (err as MulterError).message,
+          document: multerErrorMessages[err.code] ?? err.message,
         },
       },
-    }),
-  ],
-];
+    };
+  }
 
-const defaultError: ErrorResponse = { status: 500, body: { error: 'Internal server error' } };
-
-const resolveError = (err: Error): ErrorResponse =>
-  errorMatchers.find(([matches]) => matches(err))?.[1](err) ?? defaultError;
+  return defaultError;
+};
 
 export const errorHandler = (
   err: Error,

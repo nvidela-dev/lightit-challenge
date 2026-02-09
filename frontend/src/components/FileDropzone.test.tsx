@@ -9,6 +9,14 @@ const createJpgFile = (name = 'test.jpg', size = 1024) =>
 const createPngFile = () =>
   new File(['test'], 'test.png', { type: 'image/png' });
 
+const getFileInput = (): HTMLInputElement => {
+  const input = document.querySelector('input[type="file"]');
+  if (!(input instanceof HTMLInputElement)) {
+    throw new Error('File input not found');
+  }
+  return input;
+};
+
 const ControlledDropzone = ({ maxSize }: { maxSize?: number }) => {
   const [file, setFile] = useState<File | null>(null);
   return <FileDropzone value={file} onChange={setFile} maxSize={maxSize} />;
@@ -31,7 +39,7 @@ describe('FileDropzone', () => {
     const user = userEvent.setup();
     render(<FileDropzone value={null} onChange={vi.fn()} />);
 
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const fileInput = getFileInput();
     const clickSpy = vi.spyOn(fileInput, 'click');
 
     await user.click(screen.getByText(/Drag & drop/));
@@ -42,7 +50,7 @@ describe('FileDropzone', () => {
     const user = userEvent.setup();
     render(<ControlledDropzone />);
 
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const fileInput = getFileInput();
     await user.upload(fileInput, createJpgFile());
 
     expect(screen.getByText('test.jpg')).toBeInTheDocument();
@@ -53,7 +61,7 @@ describe('FileDropzone', () => {
     const user = userEvent.setup();
     render(<ControlledDropzone />);
 
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const fileInput = getFileInput();
     await user.upload(fileInput, createPngFile());
 
     expect(screen.queryByAltText('Preview')).not.toBeInTheDocument();
@@ -64,7 +72,7 @@ describe('FileDropzone', () => {
     const user = userEvent.setup();
     render(<ControlledDropzone maxSize={500} />);
 
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const fileInput = getFileInput();
     await user.upload(fileInput, createJpgFile('large.jpg', 1000));
 
     expect(screen.queryByAltText('Preview')).not.toBeInTheDocument();
@@ -75,7 +83,7 @@ describe('FileDropzone', () => {
     const user = userEvent.setup();
     render(<ControlledDropzone />);
 
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const fileInput = getFileInput();
     await user.upload(fileInput, createJpgFile('document.jpg', 2048));
 
     expect(screen.getByText('document.jpg')).toBeInTheDocument();
@@ -87,7 +95,7 @@ describe('FileDropzone', () => {
     const user = userEvent.setup();
     render(<ControlledDropzone />);
 
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const fileInput = getFileInput();
     await user.upload(fileInput, createJpgFile());
 
     expect(screen.getByAltText('Preview')).toBeInTheDocument();

@@ -5,8 +5,8 @@ import fs from 'fs';
 
 // Mock prisma before importing app
 const mockPrisma = {
+  $queryRaw: vi.fn(),
   patient: {
-    findMany: vi.fn(),
     findUnique: vi.fn(),
     create: vi.fn(),
     count: vi.fn(),
@@ -43,7 +43,7 @@ describe('GET /api/patients', () => {
   });
 
   it('returns empty array when no patients exist', async () => {
-    mockPrisma.patient.findMany.mockResolvedValue([]);
+    mockPrisma.$queryRaw.mockResolvedValue([]);
     mockPrisma.patient.count.mockResolvedValue(0);
 
     const response = await request(app).get('/api/patients');
@@ -61,7 +61,7 @@ describe('GET /api/patients', () => {
   });
 
   it('returns all patients with formatted dates', async () => {
-    mockPrisma.patient.findMany.mockResolvedValue([samplePatient]);
+    mockPrisma.$queryRaw.mockResolvedValue([samplePatient]);
     mockPrisma.patient.count.mockResolvedValue(1);
 
     const response = await request(app).get('/api/patients');
