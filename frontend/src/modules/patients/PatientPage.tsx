@@ -22,10 +22,10 @@ export const PatientPage = () => {
 
   return (
     <div className="py-8">
-      <header className="flex items-center justify-between gap-4 mb-8 max-sm:flex-col max-sm:items-stretch">
-        <h1 className="text-3xl font-bold text-slate-900 max-sm:text-2xl max-sm:text-center">
-          Patient Registration
-        </h1>
+      <header className="flex items-center justify-between gap-4 mb-6 max-sm:flex-col max-sm:items-stretch">
+        <h2 className="text-xl font-semibold text-slate-800 max-sm:text-lg max-sm:text-center">
+          Registered Patients
+        </h2>
         <Button onClick={handleOpenModal}>Add Patient</Button>
       </header>
 

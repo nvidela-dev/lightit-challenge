@@ -17,7 +17,7 @@ const SkeletonCard = () => (
 );
 
 export const PatientList = ({ patients, isLoading = false }: PatientListProps) => (
-  <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4">
+  <div className="grid grid-cols-[repeat(auto-fill,minmax(280px,1fr))] gap-4 items-start">
     {isLoading
       ? Array.from({ length: 3 }, (_, i) => <SkeletonCard key={i} />)
       : patients.map((patient) => <PatientCard key={patient.id} patient={patient} />)}

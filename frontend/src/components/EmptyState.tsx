@@ -9,14 +9,11 @@ type EmptyStateProps = {
 export const EmptyState = ({ title, description, action }: EmptyStateProps) => (
   <div className="flex flex-col items-center justify-center py-16 px-5 text-center">
     <div className="text-slate-400 mb-4">
-      <svg width="64" height="64" viewBox="0 0 64 64" fill="none">
-        <circle cx="32" cy="32" r="30" stroke="currentColor" strokeWidth="2" strokeDasharray="4 4" />
-        <path
-          d="M24 28a4 4 0 1 1 8 0M32 28a4 4 0 1 1 8 0M22 40s4 4 10 4 10-4 10-4"
-          stroke="currentColor"
-          strokeWidth="2"
-          strokeLinecap="round"
-        />
+      <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2" />
+        <rect x="9" y="3" width="6" height="4" rx="1" />
+        <path d="M12 11v6" />
+        <path d="M9 14h6" />
       </svg>
     </div>
     <h3 className="text-lg font-semibold text-slate-900">{title}</h3>
