@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { Button } from '../../components/Button';
 import { EmptyState } from '../../components/EmptyState';
 import { Pagination } from '../../components/Pagination';
@@ -6,6 +6,7 @@ import { PlusIcon, ChevronUpIcon } from '../../components/icons';
 import { usePatients } from './hooks/usePatients';
 import { PatientList } from './components/PatientList';
 import { RegistrationModal } from './components/RegistrationModal';
+import { useToast } from '../../hooks/useToast';
 
 const BACKEND_PAGE_SIZE = 18;
 const EXPANDED_PAGE_SIZE = 9;
@@ -18,6 +19,8 @@ type PatientPageProps = {
 export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPageProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visualPage, setVisualPage] = useState(1);
+  const { addToast } = useToast();
+  const hasShownError = useRef(false);
 
   const backendPage = isHeroCollapsed ? visualPage : Math.ceil(visualPage / 2);
   const { data, isLoading, isFetching, isError } = usePatients({ page: backendPage, limit: BACKEND_PAGE_SIZE });
@@ -27,6 +30,17 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
   useEffect(() => {
     setVisualPage(1);
   }, [isHeroCollapsed]);
+
+  // Show error toast when fetch fails
+  useEffect(() => {
+    if (isError && !hasShownError.current) {
+      addToast({ type: 'error', message: 'Failed to load patients. Please try again later.' });
+      hasShownError.current = true;
+    }
+    if (!isError) {
+      hasShownError.current = false;
+    }
+  }, [isError, addToast]);
 
   // Calculate visible patients based on collapsed state
   const visiblePatients = useMemo(() => {
@@ -110,12 +124,6 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
             Add Patient
           </Button>
         </header>
-
-        {isError && (
-          <div className="p-4 mb-6 bg-red-600/10 border border-red-600 rounded-lg text-red-600 text-sm">
-            Failed to load patients. Please try again later.
-          </div>
-        )}
 
         <div
           data-scroll-container
