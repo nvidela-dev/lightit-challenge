@@ -16,8 +16,23 @@ export default defineConfig({
     environment: 'node',
     include: ['src/**/*.test.ts'],
     coverage: {
-      reporter: ['text', 'html'],
-      exclude: ['node_modules/', 'src/**/*.test.ts'],
+      provider: 'v8',
+      reporter: ['text', 'html', 'json-summary'],
+      include: ['src/**/*.ts'],
+      exclude: [
+        'src/**/*.test.ts',
+        'src/index.ts',
+        'src/workers/**',
+        'src/config/**',
+        '**/notification/**',
+        'src/shared/types.ts',
+      ],
+      thresholds: {
+        lines: 100,
+        functions: 100,
+        branches: 100,
+        statements: 100,
+      },
     },
   },
 });
