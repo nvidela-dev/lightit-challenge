@@ -26,7 +26,8 @@ export const RegistrationModal = ({ isOpen, onClose }: RegistrationModalProps) =
 
       try {
         await mutateAsync(formData);
-        addToast({ type: 'success', message: 'Patient registered successfully!' });
+        const email = formData.get('email') as string;
+        addToast({ type: 'success', message: `Email sent to ${email}` });
         onClose();
         setTimeout(() => setState('form'), 300);
       } catch (err) {
