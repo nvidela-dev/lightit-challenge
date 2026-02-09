@@ -62,18 +62,12 @@ The application features a glass-morphism UI design, drag-and-drop file uploads,
 ### Built With
 
 **Frontend**
-* [![React][React.js]][React-url]
-* [![TypeScript][TypeScript]][TypeScript-url]
-* [![TailwindCSS][TailwindCSS]][TailwindCSS-url]
-* [![Vite][Vite]][Vite-url]
-* [![TanStack Query][TanStack]][TanStack-url]
+
+[![React][React.js]][React-url] [![TypeScript][TypeScript]][TypeScript-url] [![TailwindCSS][TailwindCSS]][TailwindCSS-url] [![Vite][Vite]][Vite-url] [![TanStack Query][TanStack]][TanStack-url]
 
 **Backend**
-* [![Node.js][Node.js]][Node-url]
-* [![Express][Express]][Express-url]
-* [![Prisma][Prisma]][Prisma-url]
-* [![PostgreSQL][PostgreSQL]][PostgreSQL-url]
-* [![Redis][Redis]][Redis-url]
+
+[![Node.js][Node.js]][Node-url] [![Express][Express]][Express-url] [![Prisma][Prisma]][Prisma-url] [![BullMQ][BullMQ]][BullMQ-url] [![PostgreSQL][PostgreSQL]][PostgreSQL-url] [![Redis][Redis]][Redis-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -322,6 +316,8 @@ This builds a multi-stage Docker image that:
 [Express-url]: https://expressjs.com/
 [Prisma]: https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white
 [Prisma-url]: https://www.prisma.io/
+[BullMQ]: https://img.shields.io/badge/BullMQ-E34F26?style=for-the-badge&logo=bull&logoColor=white
+[BullMQ-url]: https://bullmq.io/
 [PostgreSQL]: https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white
 [PostgreSQL-url]: https://www.postgresql.org/
 [Redis]: https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white
