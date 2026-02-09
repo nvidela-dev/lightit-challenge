@@ -7,13 +7,19 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum NotificationChannel {
+  EMAIL
+  SMS
+}
+
 model Patient {
   id          String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   fullName    String   @db.VarChar(255)
   email       String   @unique @db.VarChar(255)
   phoneCode   String   @db.VarChar(10)
   phoneNumber String   @db.VarChar(20)
-  documentUrl String   @db.VarChar(500)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  documentUrl            String              @db.VarChar(500)
+  notificationPreference NotificationChannel @default(EMAIL)
+  createdAt              DateTime            @default(now())
+  updatedAt              DateTime            @updatedAt
 }

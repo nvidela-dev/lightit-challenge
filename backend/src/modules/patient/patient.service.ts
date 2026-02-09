@@ -1,6 +1,6 @@
 import { prisma } from '@config/database.js';
 import { ConflictError } from '@shared/errors.js';
-import { dispatchConfirmationEmail } from '@services/notification/notification.queue.js';
+import { dispatchConfirmation } from '@services/notification/notification.queue.js';
 import type { CreatePatientInput } from './patient.schema.js';
 
 const patientSelect = {
@@ -10,6 +10,7 @@ const patientSelect = {
   phoneCode: true,
   phoneNumber: true,
   documentUrl: true,
+  notificationPreference: true,
   createdAt: true,
 } as const;
 
@@ -34,9 +35,10 @@ export const getPatients = async ({ page, limit }: PaginationParams) => {
       phoneCode: string;
       phoneNumber: string;
       documentUrl: string;
+      notificationPreference: string;
       createdAt: Date;
     }>>`
-      SELECT id, "fullName", email, "phoneCode", "phoneNumber", "documentUrl", "createdAt"
+      SELECT id, "fullName", email, "phoneCode", "phoneNumber", "documentUrl", "notificationPreference", "createdAt"
       FROM "Patient"
       ORDER BY LOWER("fullName") ASC
       LIMIT ${limit} OFFSET ${skip}
@@ -72,10 +74,13 @@ export const createPatient = (input: CreatePatientInput, documentUrl: string) =>
   ensureEmailNotTaken(input.email)
     .then(() => prisma.patient.create({ data: { ...input, documentUrl }, select: patientSelect }))
     .then((patient) => {
-      dispatchConfirmationEmail({
+      dispatchConfirmation({
         patientId: patient.id,
         email: patient.email,
         fullName: patient.fullName,
+        phoneCode: patient.phoneCode,
+        phoneNumber: patient.phoneNumber,
+        notificationPreference: patient.notificationPreference,
       });
       return formatPatient(patient);
     });
