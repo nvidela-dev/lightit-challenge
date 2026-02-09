@@ -1,4 +1,4 @@
-import { Toast as ToastType, ToastType as ToastVariant } from '../contexts/ToastContext';
+import { Toast as ToastType, ToastType as ToastVariant } from '../contexts/toastContext';
 import { CheckCircleIcon, XCircleIcon, InfoIcon, WarningIcon, XIcon } from './icons';
 
 type ToastProps = {

@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import App from './App';
 import { ErrorBoundary } from './components/ErrorBoundary';
-import { ToastProvider } from './contexts/ToastContext';
+import { ToastProvider } from './contexts/ToastProvider';
 import { ToastContainer } from './components/ToastContainer';
 import './styles/globals.css';
 
