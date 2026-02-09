@@ -24,7 +24,7 @@ export const PatientCard = ({ patient }: PatientCardProps) => {
 
   return (
     <article
-      className="bg-white border border-slate-200 rounded-lg overflow-hidden cursor-pointer transition-all duration-150 hover:shadow-md hover:-translate-y-0.5"
+      className="glass rounded-xl overflow-hidden cursor-pointer transition-all duration-150 hover:shadow-lg hover:-translate-y-0.5 hover:bg-white/90"
       onClick={toggleExpand}
     >
       <div className="flex items-center gap-3 p-4">
@@ -38,7 +38,7 @@ export const PatientCard = ({ patient }: PatientCardProps) => {
           <p className="text-sm text-slate-500 mt-0.5">{formatDate(patient.createdAt)}</p>
         </div>
         <span
-          className={`flex items-center justify-center w-7 h-7 text-slate-400 transition-transform duration-250 ${
+          className={`flex items-center justify-center w-7 h-7 text-slate-400 transition-transform duration-200 ${
             isExpanded ? 'rotate-180' : ''
           }`}
         >
@@ -54,7 +54,7 @@ export const PatientCard = ({ patient }: PatientCardProps) => {
         </span>
       </div>
       <div
-        className={`flex flex-col gap-2 overflow-hidden transition-all duration-250 ${
+        className={`flex flex-col gap-2 overflow-hidden transition-all duration-200 ${
           isExpanded ? 'max-h-24 opacity-100 px-4 pb-4' : 'max-h-0 opacity-0'
         }`}
       >
