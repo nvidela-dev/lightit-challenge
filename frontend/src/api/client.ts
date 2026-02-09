@@ -1,3 +1,5 @@
+import { applyDebugSettings } from '../utils/debug';
+
 const API_BASE = '/api';
 
 export class ApiError extends Error {
@@ -9,12 +11,15 @@ export class ApiError extends Error {
   }
 }
 
-export const request = <T>(endpoint: string, options?: RequestInit): Promise<T> =>
-  fetch(`${API_BASE}${endpoint}`, options)
-    .then((res) =>
-      res.ok
-        ? res.json()
-        : res.json().catch(() => ({})).then((body) => {
-            throw new ApiError(res.status, body.errors ?? body.error ?? 'Request failed');
-          })
-    );
+export const request = async <T>(endpoint: string, options?: RequestInit): Promise<T> => {
+  await applyDebugSettings();
+
+  const res = await fetch(`${API_BASE}${endpoint}`, options);
+
+  if (res.ok) {
+    return res.json();
+  }
+
+  const body = await res.json().catch(() => ({}));
+  throw new ApiError(res.status, body.errors ?? body.error ?? 'Request failed');
+};

@@ -8,3 +8,6 @@ export { XCircleIcon } from './XCircleIcon';
 export { InfoIcon } from './InfoIcon';
 export { WarningIcon } from './WarningIcon';
 export { XIcon } from './XIcon';
+export { SettingsIcon } from './SettingsIcon';
+export { WifiOffIcon } from './WifiOffIcon';
+export { ClockIcon } from './ClockIcon';
