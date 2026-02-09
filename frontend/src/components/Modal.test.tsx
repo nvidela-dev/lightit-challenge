@@ -21,7 +21,7 @@ describe('Modal', () => {
 
   it('renders modal when open', () => {
     render(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
+      <Modal isOpen onClose={mockOnClose} title="Test Modal">
         <p>Content</p>
       </Modal>
     );
@@ -34,7 +34,7 @@ describe('Modal', () => {
   it('closes on close button click', async () => {
     const user = userEvent.setup();
     render(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
+      <Modal isOpen onClose={mockOnClose} title="Test Modal">
         <p>Content</p>
       </Modal>
     );
@@ -48,7 +48,7 @@ describe('Modal', () => {
   it('closes on backdrop click', async () => {
     const user = userEvent.setup();
     render(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
+      <Modal isOpen onClose={mockOnClose} title="Test Modal">
         <p>Content</p>
       </Modal>
     );
@@ -62,7 +62,7 @@ describe('Modal', () => {
   it('does not close when clicking modal content', async () => {
     const user = userEvent.setup();
     render(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
+      <Modal isOpen onClose={mockOnClose} title="Test Modal">
         <p>Content</p>
       </Modal>
     );
@@ -74,7 +74,7 @@ describe('Modal', () => {
 
   it('closes on Escape key', () => {
     render(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
+      <Modal isOpen onClose={mockOnClose} title="Test Modal">
         <p>Content</p>
       </Modal>
     );
@@ -88,7 +88,7 @@ describe('Modal', () => {
   it('does not close when preventClose is true', async () => {
     const user = userEvent.setup();
     render(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal" preventClose>
+      <Modal isOpen onClose={mockOnClose} title="Test Modal" preventClose>
         <p>Content</p>
       </Modal>
     );
@@ -104,7 +104,7 @@ describe('Modal', () => {
 
   it('locks body scroll when open', () => {
     const { unmount } = render(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
+      <Modal isOpen onClose={mockOnClose} title="Test Modal">
         <p>Content</p>
       </Modal>
     );
@@ -117,7 +117,7 @@ describe('Modal', () => {
 
   it('has correct accessibility attributes', () => {
     render(
-      <Modal isOpen={true} onClose={mockOnClose} title="Test Modal">
+      <Modal isOpen onClose={mockOnClose} title="Test Modal">
         <p>Content</p>
       </Modal>
     );

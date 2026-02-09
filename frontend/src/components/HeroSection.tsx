@@ -27,7 +27,8 @@ export const HeroSection = () => {
     >
       <div className={`relative h-72 md:h-80 transition-transform duration-500 ease-out ${
         isCollapsed ? '-translate-y-full' : 'translate-y-0'
-      }`}>
+      }`}
+      >
         <img
           src={heroImage}
           alt="Medical professionals"

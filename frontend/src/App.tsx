@@ -3,7 +3,7 @@ import { HeroSection } from './components/HeroSection';
 import { Footer } from './components/Footer';
 import { PatientPage } from './modules/patients/PatientPage';
 
-function App() {
+const App = () => {
   return (
     <div className="min-h-screen bg-slate-100 flex flex-col">
       <Header />

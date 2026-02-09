@@ -29,6 +29,7 @@ export const Button = ({
   ...props
 }: ButtonProps) => (
   <button
+    type="button"
     className={`inline-flex items-center justify-center gap-2 font-medium rounded-lg cursor-pointer transition-all duration-150 disabled:opacity-60 disabled:cursor-not-allowed ${variantStyles[variant]} ${sizeStyles[size]} ${className}`}
     disabled={disabled || loading}
     {...props}

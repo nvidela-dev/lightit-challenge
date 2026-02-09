@@ -15,8 +15,8 @@ export const PhoneInput = ({
   onNumberChange,
   error,
 }: PhoneInputProps) => (
-  <div className="flex flex-col gap-1.5">
-    <label className="text-sm font-medium text-slate-900">Phone Number</label>
+  <fieldset className="flex flex-col gap-1.5">
+    <legend className="text-sm font-medium text-slate-900">Phone Number</legend>
     <div
       className={`flex border rounded-lg overflow-hidden transition-all duration-150 focus-within:ring-[3px] ${
         error
@@ -29,6 +29,7 @@ export const PhoneInput = ({
         value={codeValue}
         onChange={onCodeChange}
         placeholder="+1"
+        aria-label="Country code"
         className="w-[70px] px-3 py-2.5 text-sm text-center border-r border-slate-200 bg-slate-50 text-slate-900 focus:outline-none placeholder:text-slate-400"
       />
       <input
@@ -36,6 +37,7 @@ export const PhoneInput = ({
         value={numberValue}
         onChange={onNumberChange}
         placeholder="1234567890"
+        aria-label="Phone number"
         className="flex-1 px-3.5 py-2.5 text-sm bg-white text-slate-900 focus:outline-none placeholder:text-slate-400"
       />
     </div>
@@ -46,5 +48,5 @@ export const PhoneInput = ({
     >
       <span className="text-sm text-red-600">{error}</span>
     </div>
-  </div>
+  </fieldset>
 );

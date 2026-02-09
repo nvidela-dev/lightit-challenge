@@ -52,8 +52,13 @@ export const Modal = ({ isOpen, onClose, title, children, preventClose = false }
         isClosing ? 'animate-fade-out' : 'animate-fade-in'
       }`}
       onClick={handleClose}
+      onKeyDown={(e) => e.key === 'Escape' && handleClose()}
       onAnimationEnd={handleAnimationEnd}
+      role="button"
+      tabIndex={0}
+      aria-label="Close modal overlay"
     >
+      {/* eslint-disable-next-line jsx-a11y/click-events-have-key-events, jsx-a11y/no-noninteractive-element-interactions */}
       <div
         className={`bg-white rounded-2xl shadow-xl w-full max-w-md max-h-[90vh] overflow-hidden flex flex-col ${
           isClosing ? 'animate-scale-out' : 'animate-scale-in'
@@ -69,6 +74,7 @@ export const Modal = ({ isOpen, onClose, title, children, preventClose = false }
           </h2>
           {!preventClose && (
             <button
+              type="button"
               className="flex items-center justify-center w-8 h-8 text-slate-400 hover:text-slate-900 hover:bg-slate-100 rounded-md transition-all duration-150"
               onClick={handleClose}
               aria-label="Close"

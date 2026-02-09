@@ -26,6 +26,10 @@ export const PatientCard = ({ patient }: PatientCardProps) => {
     <article
       className="glass rounded-xl overflow-hidden cursor-pointer transition-all duration-150 hover:shadow-lg hover:-translate-y-0.5 hover:bg-white/90"
       onClick={toggleExpand}
+      onKeyDown={(e) => e.key === 'Enter' && toggleExpand()}
+      role="button"
+      tabIndex={0}
+      aria-expanded={isExpanded}
     >
       <div className="flex items-center gap-3 p-4">
         <img
