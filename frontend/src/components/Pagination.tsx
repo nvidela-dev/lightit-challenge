@@ -7,15 +7,15 @@ type PaginationProps = {
 type PageItem = number | 'ellipsis-start' | 'ellipsis-end';
 
 export const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
-  if (totalPages <= 1) return null;
+  const effectiveTotalPages = Math.max(1, totalPages);
 
   const getPageNumbers = (): PageItem[] => {
     const pages: PageItem[] = [];
     const showEllipsisStart = currentPage > 3;
-    const showEllipsisEnd = currentPage < totalPages - 2;
+    const showEllipsisEnd = currentPage < effectiveTotalPages - 2;
 
-    if (totalPages <= 7) {
-      for (let i = 1; i <= totalPages; i += 1) {
+    if (effectiveTotalPages <= 7) {
+      for (let i = 1; i <= effectiveTotalPages; i += 1) {
         pages.push(i);
       }
     } else {
@@ -24,14 +24,14 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
         pages.push('ellipsis-start');
       }
       const start = Math.max(2, currentPage - 1);
-      const end = Math.min(totalPages - 1, currentPage + 1);
+      const end = Math.min(effectiveTotalPages - 1, currentPage + 1);
       for (let i = start; i <= end; i += 1) {
         pages.push(i);
       }
       if (showEllipsisEnd) {
         pages.push('ellipsis-end');
       }
-      pages.push(totalPages);
+      pages.push(effectiveTotalPages);
     }
 
     return pages;
@@ -87,8 +87,8 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
       <button
         type="button"
         onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === totalPages}
-        className={`${baseButtonClass} ${currentPage === totalPages ? disabledClass : inactiveClass}`}
+        disabled={currentPage === effectiveTotalPages}
+        className={`${baseButtonClass} ${currentPage === effectiveTotalPages ? disabledClass : inactiveClass}`}
         aria-label="Next page"
       >
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">

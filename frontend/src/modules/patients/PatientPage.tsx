@@ -1,4 +1,4 @@
-import { useState, useCallback, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo } from 'react';
 import { Button } from '../../components/Button';
 import { EmptyState } from '../../components/EmptyState';
 import { Pagination } from '../../components/Pagination';
@@ -6,12 +6,61 @@ import { usePatients } from './hooks/usePatients';
 import { PatientList } from './components/PatientList';
 import { RegistrationModal } from './components/RegistrationModal';
 
-const ITEMS_PER_PAGE = 6;
+const BACKEND_PAGE_SIZE = 18;
+const EXPANDED_PAGE_SIZE = 9;
 
-export const PatientPage = () => {
+type PatientPageProps = {
+  isHeroCollapsed: boolean;
+};
+
+export const PatientPage = ({ isHeroCollapsed }: PatientPageProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [currentPage, setCurrentPage] = useState(1);
-  const { data, isLoading, isError } = usePatients();
+  const [visualPage, setVisualPage] = useState(1);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const backendPage = isHeroCollapsed ? visualPage : Math.ceil(visualPage / 2);
+  const { data, isLoading, isError } = usePatients({ page: backendPage, limit: BACKEND_PAGE_SIZE });
+
+  // Animate when collapse state changes
+  useEffect(() => {
+    setIsTransitioning(true);
+    const timer = setTimeout(() => {
+      setVisualPage(1);
+      setIsTransitioning(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [isHeroCollapsed]);
+
+  // Animate page changes
+  useEffect(() => {
+    if (!isLoading) {
+      const timer = setTimeout(() => setIsTransitioning(false), 50);
+      return () => clearTimeout(timer);
+    }
+    return undefined;
+  }, [isLoading, visualPage]);
+
+  // Calculate visible patients based on collapsed state
+  const visiblePatients = useMemo(() => {
+    const allPatients = data?.data ?? [];
+    if (isHeroCollapsed) {
+      return allPatients;
+    }
+    // When expanded, show first or second half based on odd/even visual page
+    const isFirstHalf = visualPage % 2 === 1;
+    return isFirstHalf
+      ? allPatients.slice(0, EXPANDED_PAGE_SIZE)
+      : allPatients.slice(EXPANDED_PAGE_SIZE);
+  }, [data?.data, isHeroCollapsed, visualPage]);
+
+  // Calculate total visual pages based on total items
+  const totalVisualPages = useMemo(() => {
+    const total = data?.pagination?.total ?? 0;
+    if (isHeroCollapsed) {
+      return Math.ceil(total / BACKEND_PAGE_SIZE) || 1;
+    }
+    return Math.ceil(total / EXPANDED_PAGE_SIZE) || 1;
+  }, [data?.pagination?.total, isHeroCollapsed]);
 
   const handleOpenModal = useCallback(() => {
     setIsModalOpen(true);
@@ -21,30 +70,27 @@ export const PatientPage = () => {
     setIsModalOpen(false);
   }, []);
 
-  const allPatients = useMemo(() => data?.data ?? [], [data?.data]);
-  const isEmpty = !isLoading && allPatients.length === 0;
-
-  const totalPages = Math.ceil(allPatients.length / ITEMS_PER_PAGE);
-  const paginatedPatients = useMemo(() => {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    return allPatients.slice(start, start + ITEMS_PER_PAGE);
-  }, [allPatients, currentPage]);
-
   const handlePageChange = useCallback((page: number) => {
-    setCurrentPage(page);
+    setIsTransitioning(true);
+    setTimeout(() => setVisualPage(page), 300);
   }, []);
 
+  const total = data?.pagination?.total ?? 0;
+  const isEmpty = !isLoading && visiblePatients.length === 0;
+
   return (
-    <section className="flex flex-col flex-1">
-      <div className="glass-section rounded-2xl p-6 md:p-8 flex-1 flex flex-col">
+    <section className="flex flex-col">
+      <div
+        className={`glass-section rounded-2xl p-6 md:p-8 flex flex-col transition-all duration-1000 ease-out ${
+          isHeroCollapsed ? '-translate-y-6' : 'translate-y-0'
+        }`}
+      >
         <header className="flex items-center justify-between gap-4 mb-6 max-sm:flex-col max-sm:items-stretch">
           <h2 className="text-xl font-semibold text-slate-800 max-sm:text-lg max-sm:text-center">
             Registered Patients
-            {allPatients.length > 0 && (
-              <span className="ml-2 text-sm font-normal text-slate-500">
-                ({allPatients.length})
-              </span>
-            )}
+            <span className="ml-2 text-sm font-normal text-slate-500">
+              ({total})
+            </span>
           </h2>
           <Button onClick={handleOpenModal}>Add Patient</Button>
         </header>
@@ -55,7 +101,12 @@ export const PatientPage = () => {
           </div>
         )}
 
-        <div className="flex-1">
+        <div
+          data-scroll-container
+          className={`transition-all duration-500 ease-out overflow-y-auto ${
+            isTransitioning ? 'opacity-0' : 'opacity-100'
+          } ${isHeroCollapsed ? 'h-[600px]' : 'h-[280px]'}`}
+        >
           {isEmpty ? (
             <EmptyState
               title="No patients yet"
@@ -63,19 +114,21 @@ export const PatientPage = () => {
               action={<Button onClick={handleOpenModal}>Add Patient</Button>}
             />
           ) : (
-            <PatientList patients={paginatedPatients} isLoading={isLoading} />
+            <PatientList patients={visiblePatients} isLoading={isLoading} />
           )}
         </div>
 
-        {totalPages > 1 && (
-          <footer className="mt-6 pt-6 border-t border-slate-200/50">
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={handlePageChange}
-            />
-          </footer>
-        )}
+        <footer
+          className={`mt-auto pt-6 border-t border-slate-200/50 transition-opacity duration-300 ease-out ${
+            isTransitioning ? 'opacity-0' : 'opacity-100'
+          }`}
+        >
+          <Pagination
+            currentPage={visualPage}
+            totalPages={totalVisualPages}
+            onPageChange={handlePageChange}
+          />
+        </footer>
       </div>
 
       <RegistrationModal isOpen={isModalOpen} onClose={handleCloseModal} />

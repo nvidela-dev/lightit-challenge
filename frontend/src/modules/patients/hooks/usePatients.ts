@@ -1,10 +1,15 @@
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import { fetchPatients, createPatient } from '../api';
 
-export const usePatients = () =>
+type UsePatientsParams = {
+  page?: number;
+  limit?: number;
+};
+
+export const usePatients = ({ page = 1, limit = 6 }: UsePatientsParams = {}) =>
   useQuery({
-    queryKey: ['patients'],
-    queryFn: fetchPatients,
+    queryKey: ['patients', { page, limit }],
+    queryFn: () => fetchPatients({ page, limit }),
   });
 
 export const useCreatePatient = () => {

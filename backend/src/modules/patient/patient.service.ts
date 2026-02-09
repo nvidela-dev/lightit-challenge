@@ -18,10 +18,34 @@ const formatPatient = ({ createdAt, ...rest }: { createdAt: Date; [key: string]:
   createdAt: createdAt.toISOString(),
 });
 
-export const getAllPatients = () =>
-  prisma.patient
-    .findMany({ select: patientSelect, orderBy: { createdAt: 'desc' } })
-    .then((patients) => patients.map(formatPatient));
+type PaginationParams = {
+  page: number;
+  limit: number;
+};
+
+export const getPatients = async ({ page, limit }: PaginationParams) => {
+  const skip = (page - 1) * limit;
+
+  const [patients, total] = await Promise.all([
+    prisma.patient.findMany({
+      select: patientSelect,
+      orderBy: { fullName: 'asc' },
+      skip,
+      take: limit,
+    }),
+    prisma.patient.count(),
+  ]);
+
+  return {
+    data: patients.map(formatPatient),
+    pagination: {
+      page,
+      limit,
+      total,
+      totalPages: Math.ceil(total / limit),
+    },
+  };
+};
 
 const ensureEmailNotTaken = (email: string) =>
   prisma.patient
