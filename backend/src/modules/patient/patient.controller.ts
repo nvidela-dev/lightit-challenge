@@ -1,22 +1,19 @@
 import type { Request, Response, NextFunction } from 'express';
+import { unlink } from 'fs/promises';
 import * as patientService from './patient.service.js';
-import { ValidationError } from '@shared/errors.js';
-import { formatZodErrors } from '@shared/validation.js';
-import { createPatientSchema } from './patient.schema.js';
+import type { CreatePatientInput, GetPatientsQuery } from './patient.schema.js';
 
-const DEFAULT_PAGE = 1;
-const DEFAULT_LIMIT = 18;
+const removeFile = (file?: Express.Multer.File) =>
+  file ? unlink(file.path).catch(() => {}) : Promise.resolve();
 
 export const getPatients = (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  const page = Math.max(1, Number(req.query.page) || DEFAULT_PAGE);
-  const limit = Math.min(100, Math.max(1, Number(req.query.limit) || DEFAULT_LIMIT));
-
+  const query = req.query as unknown as GetPatientsQuery;
   return patientService
-    .getPatients({ page, limit })
+    .getPatients(query)
     .then((result) => res.json(result))
     .catch(next);
 };
@@ -26,18 +23,14 @@ export const createPatient = (
   res: Response,
   next: NextFunction
 ) => {
-  const file = req.file;
-  const result = createPatientSchema.safeParse(req.body);
+  const file = req.file!;
+  const body = req.body as CreatePatientInput;
 
-  const validationErrors = {
-    ...(!file && { document: 'Document photo is required' }),
-    ...(!result.success && formatZodErrors(result.error?.issues ?? [])),
-  };
-
-  return Object.keys(validationErrors).length
-    ? next(new ValidationError(validationErrors))
-    : patientService
-        .createPatient(result.data!, `/uploads/${file!.filename}`)
-        .then((patient) => res.status(201).json({ data: patient }))
-        .catch(next);
+  return patientService
+    .createPatient(body, `/uploads/${file.filename}`)
+    .then((patient) => res.status(201).json({ data: patient }))
+    .catch((err) => {
+      removeFile(file);
+      next(err);
+    });
 };
