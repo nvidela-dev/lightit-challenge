@@ -64,7 +64,7 @@ export const PatientCard = ({ patient }: PatientCardProps) => {
       >
         <div className="flex justify-between gap-3">
           <span className="text-sm text-slate-500">Email</span>
-          <span className="text-sm text-slate-900 text-right">{patient.email}</span>
+          <span className="text-sm text-slate-900 text-right truncate">{patient.email}</span>
         </div>
         <div className="flex justify-between gap-3">
           <span className="text-sm text-slate-500">Phone</span>

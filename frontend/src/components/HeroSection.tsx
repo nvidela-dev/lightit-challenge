@@ -1,31 +1,41 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import heroImage from '../assets/doctor-stock.jpg';
 
-export const HeroSection = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+type HeroSectionProps = {
+  isCollapsed: boolean;
+  onCollapseChange: (collapsed: boolean) => void;
+};
 
+export const HeroSection = ({ isCollapsed, onCollapseChange }: HeroSectionProps) => {
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
+      // Check if scrolling inside a scrollable container
+      const target = e.target as HTMLElement;
+      const scrollContainer = target.closest('[data-scroll-container]');
+      if (scrollContainer) {
+        return;
+      }
+
       if (e.deltaY > 0) {
         // Scrolling down - collapse
-        setIsCollapsed(true);
+        onCollapseChange(true);
       } else if (e.deltaY < 0 && window.scrollY === 0) {
         // Scrolling up at the top - expand
-        setIsCollapsed(false);
+        onCollapseChange(false);
       }
     };
 
     window.addEventListener('wheel', handleWheel, { passive: true });
     return () => window.removeEventListener('wheel', handleWheel);
-  }, []);
+  }, [onCollapseChange]);
 
   return (
     <section
-      className={`relative overflow-hidden transition-all duration-500 ease-out ${
+      className={`relative overflow-hidden transition-all duration-1000 ease-out ${
         isCollapsed ? 'max-h-0' : 'max-h-80'
       }`}
     >
-      <div className={`relative h-72 md:h-80 transition-transform duration-500 ease-out ${
+      <div className={`relative h-72 md:h-80 transition-transform duration-1000 ease-out ${
         isCollapsed ? '-translate-y-full' : 'translate-y-0'
       }`}
       >

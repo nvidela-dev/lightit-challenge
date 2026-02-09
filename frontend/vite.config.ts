@@ -12,7 +12,7 @@ export default defineConfig({
   },
   build: {
     outDir: process.env.DOCKER_BUILD ? 'dist' : '../backend/public',
-    emptyOutDir: true,
+    emptyOutDir: false,
   },
   test: {
     globals: true,
