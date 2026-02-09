@@ -61,10 +61,10 @@ describe('PatientCard', () => {
     render(<PatientCard patient={mockPatient} />);
 
     const chevron = screen.getByRole('button').querySelector('span svg')?.parentElement;
-    expect(chevron).not.toHaveClass('rotate-180');
+    expect(chevron).toHaveClass('rotate-180'); // Collapsed: rotated to point down
 
     await user.click(screen.getByRole('button'));
-    expect(chevron).toHaveClass('rotate-180');
+    expect(chevron).not.toHaveClass('rotate-180'); // Expanded: no rotation, points up
   });
 
   it('displays email in expanded view', async () => {

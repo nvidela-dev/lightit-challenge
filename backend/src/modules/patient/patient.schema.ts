@@ -9,8 +9,6 @@ export const getPatientsQuerySchema = z.object({
   limit: z.coerce.number().int().min(1).max(MAX_LIMIT).default(DEFAULT_LIMIT),
 });
 
-export type GetPatientsQuery = z.infer<typeof getPatientsQuerySchema>;
-
 export const createPatientSchema = z.object({
   fullName: z
     .string()

@@ -10,7 +10,7 @@ const parseRedisUrl = (url: string): ConnectionOptions => {
   };
 };
 
-export const redisConnection = parseRedisUrl(env.REDIS_URL);
+const redisConnection = parseRedisUrl(env.REDIS_URL);
 
 export const createQueue = <T>(name: string) =>
   new Queue<T>(name, { connection: redisConnection });

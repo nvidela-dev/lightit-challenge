@@ -1,6 +1,7 @@
 .PHONY: help install dev up down logs build clean migrate seed mail db-reset test coverage worker \
         api-health api-patients api-create-patient \
-        e2e-install e2e e2e-ui e2e-headed e2e-debug e2e-report
+        e2e-install e2e e2e-ui e2e-headed e2e-debug e2e-report \
+        claudenuke
 
 # Default target
 help:
@@ -35,6 +36,9 @@ help:
 	@echo "  make api-health         - Check API health endpoint"
 	@echo "  make api-patients       - List all patients"
 	@echo "  make api-create-patient - Create a test patient"
+	@echo ""
+	@echo "Utilities:"
+	@echo "  make claudenuke  - Kill all Claude Code instances"
 	@echo ""
 
 # Install dependencies
@@ -172,3 +176,13 @@ e2e-debug:
 # Show E2E test report
 e2e-report:
 	cd e2e && npm run report
+
+# =============================================================================
+# Utilities
+# =============================================================================
+
+# Kill all Claude Code instances
+claudenuke:
+	@echo "Killing all Claude Code instances..."
+	@pkill -9 -f "claude" 2>/dev/null || true
+	@echo "Done."

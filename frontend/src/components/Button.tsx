@@ -1,7 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
 type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
-  variant?: 'primary' | 'secondary' | 'ghost';
+  variant?: 'primary' | 'secondary';
   size?: 'sm' | 'md' | 'lg';
   loading?: boolean;
   children: ReactNode;
@@ -10,7 +10,6 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 const variantStyles = {
   primary: 'glass-button text-white',
   secondary: 'glass text-slate-900 hover:bg-white/90',
-  ghost: 'bg-transparent text-slate-500 hover:bg-slate-100 hover:text-slate-900',
 };
 
 const sizeStyles = {

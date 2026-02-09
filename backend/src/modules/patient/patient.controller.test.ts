@@ -2,6 +2,7 @@ import { describe, it, expect, vi, beforeEach } from 'vitest';
 import type { Request, Response, NextFunction } from 'express';
 import { createPatient } from './patient.controller';
 import * as patientService from './patient.service.js';
+import { ValidationError } from '@shared/errors.js';
 
 vi.mock('./patient.service.js', () => ({
   createPatient: vi.fn(),
@@ -38,16 +39,16 @@ describe('patient.controller', () => {
   });
 
   describe('createPatient', () => {
-    it('calls next with error when file is missing', () => {
+    it('calls next with ValidationError when file is missing', async () => {
       const req = createMockRequest({ file: undefined });
       const res = createMockResponse();
       const next: NextFunction = vi.fn();
 
-      createPatient(req, res, next);
+      await createPatient(req, res, next);
 
-      expect(next).toHaveBeenCalledWith(expect.any(Error));
-      const error = (next as ReturnType<typeof vi.fn>).mock.calls[0][0] as Error;
-      expect(error.message).toBe('File is required');
+      expect(next).toHaveBeenCalledWith(expect.any(ValidationError));
+      const error = (next as ReturnType<typeof vi.fn>).mock.calls[0][0] as ValidationError;
+      expect(error.errors).toEqual({ document: 'Document photo is required' });
     });
 
     it('creates patient when file is present', async () => {
@@ -61,9 +62,6 @@ describe('patient.controller', () => {
       const next: NextFunction = vi.fn();
 
       await createPatient(req, res, next);
-
-      // Wait for promise to resolve
-      await new Promise((resolve) => setTimeout(resolve, 0));
 
       expect(mockedService.createPatient).toHaveBeenCalledWith(
         expect.objectContaining({ fullName: 'John Doe' }),

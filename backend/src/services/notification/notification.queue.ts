@@ -1,7 +1,7 @@
 import { createQueue } from '@config/queue.js';
 import type { NotificationJob, NotificationChannel } from './types.js';
 
-export const notificationQueue = createQueue<NotificationJob>('notifications');
+const notificationQueue = createQueue<NotificationJob>('notifications');
 
 // Low-level dispatchers for specific channels
 export const dispatchConfirmationEmail = (payload: {

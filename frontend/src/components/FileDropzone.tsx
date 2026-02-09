@@ -1,4 +1,5 @@
 import { useState, useRef, useCallback, useEffect, type DragEvent, type ChangeEvent } from 'react';
+import { XIcon } from './icons';
 
 type FileDropzoneProps = {
   value: File | null;
@@ -122,9 +123,7 @@ export const FileDropzone = ({
             onClick={handleRemove}
             aria-label="Remove file"
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-            </svg>
+            <XIcon width={16} height={16} />
           </button>
         </div>
       ) : (

@@ -136,9 +136,7 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
               action={(
                 <Button onClick={handleOpenModal}>
                   <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white/20">
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
-                      <path d="M6 2v8M2 6h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-                    </svg>
+                    <PlusIcon width={12} height={12} />
                   </span>
                   Add Patient
                 </Button>
