@@ -1,26 +1,11 @@
 import { useState, useCallback } from 'react';
 import type { Patient } from '../types';
+import { ChevronUpIcon } from '../../../components/icons';
+import { formatDate, formatPhone, capitalizeWords } from '../../../utils/formatters';
 
 type PatientCardProps = {
   patient: Patient;
 };
-
-const formatDate = (dateString: string): string =>
-  new Date(dateString).toLocaleDateString('en-US', {
-    year: 'numeric',
-    month: 'short',
-    day: 'numeric',
-  });
-
-const formatPhone = (code: string, number: string): string =>
-  `${code} ${number.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3')}`;
-
-const capitalizeWords = (str: string): string =>
-  str
-    .toLowerCase()
-    .split(' ')
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(' ');
 
 export const PatientCard = ({ patient }: PatientCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -50,18 +35,10 @@ export const PatientCard = ({ patient }: PatientCardProps) => {
         </div>
         <span
           className={`flex items-center justify-center w-7 h-7 text-slate-400 transition-transform duration-200 ${
-            isExpanded ? 'rotate-180' : ''
+            isExpanded ? '' : 'rotate-180'
           }`}
         >
-          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-            <path
-              d="M6 8l4 4 4-4"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <ChevronUpIcon width={20} height={20} />
         </span>
       </div>
       <div

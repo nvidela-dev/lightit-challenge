@@ -1,3 +1,4 @@
+import type { ComponentType, SVGProps } from 'react';
 import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from './icons';
 
 type PaginationProps = {
@@ -7,6 +8,31 @@ type PaginationProps = {
 };
 
 type PageItem = number | 'ellipsis-start' | 'ellipsis-end';
+
+const baseButtonClass =
+  'flex items-center justify-center min-w-[40px] h-10 px-3 text-sm font-medium rounded-lg transition-all duration-150';
+const activeClass = 'glass-button text-white';
+const inactiveClass = 'text-gray-500 hover:bg-gray-100';
+const disabledClass = 'opacity-40 cursor-not-allowed';
+
+type NavButtonProps = {
+  onClick: () => void;
+  disabled: boolean;
+  label: string;
+  icon: ComponentType<SVGProps<SVGSVGElement>>;
+};
+
+const NavButton = ({ onClick, disabled, label, icon: Icon }: NavButtonProps) => (
+  <button
+    type="button"
+    onClick={onClick}
+    disabled={disabled}
+    className={`${baseButtonClass} ${disabled ? disabledClass : inactiveClass}`}
+    aria-label={label}
+  >
+    <Icon width="16" height="16" />
+  </button>
+);
 
 export const Pagination = ({ currentPage, totalPages, onPageChange }: PaginationProps) => {
   const effectiveTotalPages = Math.max(1, totalPages);
@@ -39,39 +65,17 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
     return pages;
   };
 
-  const baseButtonClass =
-    'flex items-center justify-center min-w-[40px] h-10 px-3 text-sm font-medium rounded-lg transition-all duration-150';
-  const activeClass = 'glass-button text-white';
-  const inactiveClass = 'text-gray-500 hover:bg-gray-100';
-  const disabledClass = 'opacity-40 cursor-not-allowed';
+  const atStart = currentPage === 1;
+  const atEnd = currentPage === effectiveTotalPages;
 
   return (
     <nav className="flex items-center justify-center gap-1" aria-label="Pagination">
-      <button
-        type="button"
-        onClick={() => onPageChange(1)}
-        disabled={currentPage === 1}
-        className={`${baseButtonClass} ${currentPage === 1 ? disabledClass : inactiveClass}`}
-        aria-label="First page"
-      >
-        <ChevronsLeftIcon width="16" height="16" />
-      </button>
-      <button
-        type="button"
-        onClick={() => onPageChange(currentPage - 1)}
-        disabled={currentPage === 1}
-        className={`${baseButtonClass} ${currentPage === 1 ? disabledClass : inactiveClass}`}
-        aria-label="Previous page"
-      >
-        <ChevronLeftIcon width="16" height="16" />
-      </button>
+      <NavButton onClick={() => onPageChange(1)} disabled={atStart} label="First page" icon={ChevronsLeftIcon} />
+      <NavButton onClick={() => onPageChange(currentPage - 1)} disabled={atStart} label="Previous page" icon={ChevronLeftIcon} />
 
       {getPageNumbers().map((page) =>
         typeof page === 'string' ? (
-          <span
-            key={page}
-            className="flex items-center justify-center w-10 h-10 text-slate-400"
-          >
+          <span key={page} className="flex items-center justify-center w-10 h-10 text-slate-400">
             ...
           </span>
         ) : (
@@ -87,24 +91,8 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
         )
       )}
 
-      <button
-        type="button"
-        onClick={() => onPageChange(currentPage + 1)}
-        disabled={currentPage === effectiveTotalPages}
-        className={`${baseButtonClass} ${currentPage === effectiveTotalPages ? disabledClass : inactiveClass}`}
-        aria-label="Next page"
-      >
-        <ChevronRightIcon width="16" height="16" />
-      </button>
-      <button
-        type="button"
-        onClick={() => onPageChange(effectiveTotalPages)}
-        disabled={currentPage === effectiveTotalPages}
-        className={`${baseButtonClass} ${currentPage === effectiveTotalPages ? disabledClass : inactiveClass}`}
-        aria-label="Last page"
-      >
-        <ChevronsRightIcon width="16" height="16" />
-      </button>
+      <NavButton onClick={() => onPageChange(currentPage + 1)} disabled={atEnd} label="Next page" icon={ChevronRightIcon} />
+      <NavButton onClick={() => onPageChange(effectiveTotalPages)} disabled={atEnd} label="Last page" icon={ChevronsRightIcon} />
     </nav>
   );
 };
