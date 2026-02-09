@@ -14,4 +14,10 @@ export default defineConfig({
     outDir: '../backend/public',
     emptyOutDir: true,
   },
+  test: {
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './src/test/setup.ts',
+    css: true,
+  },
 });
