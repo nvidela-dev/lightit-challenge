@@ -27,12 +27,20 @@ export const getPatients = async ({ page, limit }: PaginationParams) => {
   const skip = (page - 1) * limit;
 
   const [patients, total] = await Promise.all([
-    prisma.patient.findMany({
-      select: patientSelect,
-      orderBy: { fullName: 'asc' },
-      skip,
-      take: limit,
-    }),
+    prisma.$queryRaw<Array<{
+      id: string;
+      fullName: string;
+      email: string;
+      phoneCode: string;
+      phoneNumber: string;
+      documentUrl: string;
+      createdAt: Date;
+    }>>`
+      SELECT id, "fullName", email, "phoneCode", "phoneNumber", "documentUrl", "createdAt"
+      FROM "Patient"
+      ORDER BY LOWER("fullName") ASC
+      LIMIT ${limit} OFFSET ${skip}
+    `,
     prisma.patient.count(),
   ]);
 

@@ -8,3 +8,5 @@ export { XCircleIcon } from './XCircleIcon';
 export { InfoIcon } from './InfoIcon';
 export { WarningIcon } from './WarningIcon';
 export { XIcon } from './XIcon';
+export { ChevronsLeftIcon } from './ChevronsLeftIcon';
+export { ChevronsRightIcon } from './ChevronsRightIcon';

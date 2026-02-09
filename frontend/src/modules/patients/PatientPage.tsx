@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect, useMemo } from 'react';
+import { useState, useCallback, useEffect, useMemo, useRef } from 'react';
 import { Button } from '../../components/Button';
 import { EmptyState } from '../../components/EmptyState';
 import { Pagination } from '../../components/Pagination';
@@ -6,6 +6,7 @@ import { PlusIcon, ChevronUpIcon } from '../../components/icons';
 import { usePatients } from './hooks/usePatients';
 import { PatientList } from './components/PatientList';
 import { RegistrationModal } from './components/RegistrationModal';
+import { useToast } from '../../hooks/useToast';
 
 const BACKEND_PAGE_SIZE = 18;
 const EXPANDED_PAGE_SIZE = 9;
@@ -18,29 +19,28 @@ type PatientPageProps = {
 export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPageProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visualPage, setVisualPage] = useState(1);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  const { addToast } = useToast();
+  const hasShownError = useRef(false);
 
   const backendPage = isHeroCollapsed ? visualPage : Math.ceil(visualPage / 2);
-  const { data, isLoading, isError } = usePatients({ page: backendPage, limit: BACKEND_PAGE_SIZE });
+  const { data, isLoading, isFetching, isError } = usePatients({ page: backendPage, limit: BACKEND_PAGE_SIZE });
+  const showSkeleton = isLoading || isFetching || isError;
 
-  // Animate when collapse state changes
+  // Reset to page 1 when collapse state changes
   useEffect(() => {
-    setIsTransitioning(true);
-    const timer = setTimeout(() => {
-      setVisualPage(1);
-      setIsTransitioning(false);
-    }, 500);
-    return () => clearTimeout(timer);
+    setVisualPage(1);
   }, [isHeroCollapsed]);
 
-  // Animate page changes
+  // Show error toast when fetch fails
   useEffect(() => {
-    if (!isLoading) {
-      const timer = setTimeout(() => setIsTransitioning(false), 50);
-      return () => clearTimeout(timer);
+    if (isError && !hasShownError.current) {
+      addToast({ type: 'error', message: 'Failed to load patients. Please try again later.' });
+      hasShownError.current = true;
     }
-    return undefined;
-  }, [isLoading, visualPage]);
+    if (!isError) {
+      hasShownError.current = false;
+    }
+  }, [isError, addToast]);
 
   // Calculate visible patients based on collapsed state
   const visiblePatients = useMemo(() => {
@@ -73,12 +73,12 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
   }, []);
 
   const handlePageChange = useCallback((page: number) => {
-    setIsTransitioning(true);
-    setTimeout(() => setVisualPage(page), 300);
+    setVisualPage(page);
   }, []);
 
   const total = data?.pagination?.total ?? 0;
-  const isEmpty = !isLoading && visiblePatients.length === 0;
+  const isEmpty = !showSkeleton && !isError && visiblePatients.length === 0;
+  const skeletonCount = isHeroCollapsed ? BACKEND_PAGE_SIZE : EXPANDED_PAGE_SIZE;
 
   return (
     <section className="flex flex-col">
@@ -125,17 +125,9 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
           </Button>
         </header>
 
-        {isError && (
-          <div className="p-4 mb-6 bg-red-600/10 border border-red-600 rounded-lg text-red-600 text-sm">
-            Failed to load patients. Please try again later.
-          </div>
-        )}
-
         <div
           data-scroll-container
-          className={`transition-all duration-500 ease-out overflow-y-auto ${
-            isTransitioning ? 'opacity-0' : 'opacity-100'
-          } ${isHeroCollapsed ? 'h-[600px]' : 'h-[280px]'}`}
+          className={`overflow-y-auto ${isHeroCollapsed ? 'h-[600px]' : 'h-[280px]'}`}
         >
           {isEmpty ? (
             <EmptyState
@@ -153,15 +145,11 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
               )}
             />
           ) : (
-            <PatientList patients={visiblePatients} isLoading={isLoading} />
+            <PatientList patients={visiblePatients} isLoading={showSkeleton} skeletonCount={skeletonCount} />
           )}
         </div>
 
-        <footer
-          className={`mt-auto pt-6 border-t border-slate-200/50 transition-opacity duration-300 ease-out ${
-            isTransitioning ? 'opacity-0' : 'opacity-100'
-          }`}
-        >
+        <footer className="mt-auto pt-6 border-t border-slate-200/50">
           <Pagination
             currentPage={visualPage}
             totalPages={totalVisualPages}
