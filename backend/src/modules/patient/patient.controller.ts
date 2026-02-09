@@ -1,10 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
-import { unlink } from 'fs/promises';
 import * as patientService from './patient.service.js';
 import { createPatientSchema, getPatientsQuerySchema } from './patient.schema.js';
-
-const removeFile = (file?: Express.Multer.File) =>
-  file ? unlink(file.path).catch(() => {}) : Promise.resolve();
+import { removeFile } from '@shared/file.js';
 
 export const getPatients = (
   req: Request,

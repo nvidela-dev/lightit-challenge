@@ -1,7 +1,7 @@
 import type { Request, Response, NextFunction } from 'express';
 import type { ZodSchema } from 'zod';
-import { unlink } from 'fs/promises';
 import { ValidationError } from '@shared/errors.js';
+import { removeFile } from '@shared/file.js';
 import { formatZodErrors } from '@shared/validation.js';
 
 type Source = 'body' | 'query';
@@ -17,9 +17,6 @@ export const validate =
       next(new ValidationError(formatZodErrors(result.error.issues)));
     }
   };
-
-const removeFile = (file?: Express.Multer.File) =>
-  file ? unlink(file.path).catch(() => {}) : Promise.resolve();
 
 export const validateWithFile =
   <T>(schema: ZodSchema<T>, fileField: string = 'document', fileLabel: string = 'Document photo') =>
