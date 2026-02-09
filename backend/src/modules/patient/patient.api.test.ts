@@ -18,9 +18,9 @@ vi.mock('@config/database.js', () => ({
 }));
 
 // Mock notification queue
-const mockDispatchConfirmationEmail = vi.fn();
+const mockDispatchConfirmation = vi.fn();
 vi.mock('@services/notification/notification.queue.js', () => ({
-  dispatchConfirmationEmail: mockDispatchConfirmationEmail,
+  dispatchConfirmation: mockDispatchConfirmation,
 }));
 
 // Import app after mocking
@@ -34,6 +34,7 @@ const samplePatient = {
   phoneCode: '+1',
   phoneNumber: '1234567890',
   documentUrl: '/uploads/test.jpg',
+  notificationPreference: 'EMAIL' as const,
   createdAt: new Date('2024-01-01T00:00:00.000Z'),
 };
 
@@ -156,10 +157,13 @@ describe('POST /api/patients', () => {
       fullName: 'John Doe',
       email: 'john.doe@gmail.com',
     });
-    expect(mockDispatchConfirmationEmail).toHaveBeenCalledWith({
+    expect(mockDispatchConfirmation).toHaveBeenCalledWith({
       patientId: samplePatient.id,
       email: samplePatient.email,
       fullName: samplePatient.fullName,
+      phoneCode: samplePatient.phoneCode,
+      phoneNumber: samplePatient.phoneNumber,
+      notificationPreference: samplePatient.notificationPreference,
     });
   });
 });

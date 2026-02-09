@@ -1,19 +1,25 @@
 import 'dotenv/config';
 import { createWorker } from '@config/queue.js';
-import { sendConfirmationEmail } from '@services/notification/channels/email.channel.js';
-import type { NotificationJob } from '@services/notification/types.js';
+import {
+  sendConfirmationEmail,
+  sendConfirmationSms,
+} from '@services/notification/channels/index.js';
+import type { NotificationJob, JobPayload } from '@services/notification/types.js';
 
-const jobHandlers: Record<
-  NotificationJob['type'],
-  (payload: NotificationJob['payload']) => Promise<unknown>
-> = {
+const jobHandlers: {
+  [K in NotificationJob['type']]: (payload: JobPayload<K>) => Promise<unknown>;
+} = {
   SEND_CONFIRMATION_EMAIL: ({ email, fullName }) =>
     sendConfirmationEmail(email, fullName),
+  SEND_CONFIRMATION_SMS: ({ phoneCode, phoneNumber, fullName }) =>
+    sendConfirmationSms(phoneCode, phoneNumber, fullName),
 };
 
 const processJob = async ({ data }: { data: NotificationJob }) => {
   console.log(`Processing job: ${data.type}`);
-  const handler = jobHandlers[data.type];
+  const handler = jobHandlers[data.type] as (
+    payload: NotificationJob['payload']
+  ) => Promise<unknown>;
   await handler(data.payload);
   console.log(`Job completed: ${data.type}`);
 };
