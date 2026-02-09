@@ -4,6 +4,7 @@ WORKDIR /app/frontend
 COPY frontend/package*.json ./
 RUN npm ci
 COPY frontend/ .
+ENV DOCKER_BUILD=true
 RUN npm run build
 
 # Stage 2: Build backend
@@ -12,26 +13,20 @@ WORKDIR /app
 COPY backend/package*.json ./
 RUN npm ci
 COPY backend/ .
+RUN npx prisma generate
 RUN npm run build
 
 # Stage 3: Production
 FROM node:20-alpine
 WORKDIR /app
 
-# Copy backend build and dependencies
 COPY --from=backend /app/dist ./dist
 COPY --from=backend /app/node_modules ./node_modules
 COPY --from=backend /app/package.json ./
-
-# Copy Prisma schema for migrations
-COPY backend/prisma ./prisma
-
-# Copy frontend build to public folder
+COPY --from=backend /app/prisma ./prisma
 COPY --from=frontend /app/frontend/dist ./public
-
-# Create uploads directory
-RUN mkdir -p uploads
+COPY backend/uploads ./uploads
 
 EXPOSE 3001
 
-CMD ["node", "dist/index.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]

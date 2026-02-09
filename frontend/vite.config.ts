@@ -11,7 +11,7 @@ export default defineConfig({
     },
   },
   build: {
-    outDir: '../backend/public',
+    outDir: process.env.DOCKER_BUILD ? 'dist' : '../backend/public',
     emptyOutDir: true,
   },
   test: {
