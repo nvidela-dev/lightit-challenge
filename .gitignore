@@ -25,9 +25,10 @@ Thumbs.db
 *.log
 npm-debug.log*
 
-# Uploads (keep directory, ignore contents)
+# Uploads (keep directory, ignore contents except samples)
 backend/uploads/*
 !backend/uploads/.gitkeep
+!backend/uploads/sample-doc-*.jpg
 
 # Prisma
 backend/prisma/*.db
