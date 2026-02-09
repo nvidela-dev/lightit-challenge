@@ -1,5 +1,16 @@
 import { z } from 'zod';
 
+const DEFAULT_PAGE = 1;
+const DEFAULT_LIMIT = 18;
+const MAX_LIMIT = 100;
+
+export const getPatientsQuerySchema = z.object({
+  page: z.coerce.number().int().min(1).default(DEFAULT_PAGE),
+  limit: z.coerce.number().int().min(1).max(MAX_LIMIT).default(DEFAULT_LIMIT),
+});
+
+export type GetPatientsQuery = z.infer<typeof getPatientsQuerySchema>;
+
 export const createPatientSchema = z.object({
   fullName: z
     .string()
