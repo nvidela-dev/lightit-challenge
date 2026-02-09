@@ -1,20 +1,9 @@
 <a id="readme-top"></a>
 
-<!-- PROJECT SHIELDS -->
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![LinkedIn][linkedin-shield]][linkedin-url]
-
-
-
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/nvidela-dev/lightit-challenge">
-    <img src="frontend/src/assets/doctor-stock.jpg" alt="Logo" width="120" height="120" style="border-radius: 50%;">
-  </a>
+  <img src="frontend/src/assets/doctor-stock.jpg" alt="Logo" width="120" height="120" style="border-radius: 50%;">
 
   <h3 align="center">Patient Registration App</h3>
 
@@ -22,13 +11,6 @@
     A full-stack patient registration system with React frontend and Express backend
     <br />
     <a href="#getting-started"><strong>Get Started »</strong></a>
-    <br />
-    <br />
-    <a href="#usage">View Demo</a>
-    ·
-    <a href="https://github.com/nvidela-dev/lightit-challenge/issues/new?labels=bug">Report Bug</a>
-    ·
-    <a href="https://github.com/nvidela-dev/lightit-challenge/issues/new?labels=enhancement">Request Feature</a>
   </p>
 </div>
 
@@ -56,8 +38,6 @@
     <li><a href="#api-reference">API Reference</a></li>
     <li><a href="#testing">Testing</a></li>
     <li><a href="#docker">Docker</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#contact">Contact</a></li>
   </ol>
 </details>
 
@@ -143,7 +123,7 @@ The application features a glass-morphism UI design, drag-and-drop file uploads,
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/nvidela-dev/lightit-challenge.git
+   git clone <repository-url>
    cd lightit-challenge
    ```
 
@@ -325,44 +305,7 @@ This builds a multi-stage Docker image that:
 
 
 
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the Branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Nico Videla - [@nvidela](https://github.com/nvidela-dev)
-
-Project Link: [https://github.com/nvidela-dev/lightit-challenge](https://github.com/nvidela-dev/lightit-challenge)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
 <!-- MARKDOWN LINKS & IMAGES -->
-[contributors-shield]: https://img.shields.io/github/contributors/nvidela-dev/lightit-challenge.svg?style=for-the-badge
-[contributors-url]: https://github.com/nvidela-dev/lightit-challenge/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/nvidela-dev/lightit-challenge.svg?style=for-the-badge
-[forks-url]: https://github.com/nvidela-dev/lightit-challenge/network/members
-[stars-shield]: https://img.shields.io/github/stars/nvidela-dev/lightit-challenge.svg?style=for-the-badge
-[stars-url]: https://github.com/nvidela-dev/lightit-challenge/stargazers
-[issues-shield]: https://img.shields.io/github/issues/nvidela-dev/lightit-challenge.svg?style=for-the-badge
-[issues-url]: https://github.com/nvidela-dev/lightit-challenge/issues
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/nvidela-dev
-
 [React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
 [React-url]: https://reactjs.org/
 [TypeScript]: https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white
