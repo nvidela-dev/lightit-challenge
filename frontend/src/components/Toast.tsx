@@ -6,40 +6,45 @@ type ToastProps = {
   onDismiss: (id: string) => void;
 };
 
-const iconMap: Record<ToastVariant, typeof CheckCircleIcon> = {
-  success: CheckCircleIcon,
-  error: XCircleIcon,
-  info: InfoIcon,
-  warning: WarningIcon,
-};
-
-const iconColorMap: Record<ToastVariant, string> = {
-  success: 'text-green-700',
-  error: 'text-red-700',
-  info: 'text-blue-700',
-  warning: 'text-amber-700',
-};
-
-const textColorMap: Record<ToastVariant, string> = {
-  success: 'text-green-800',
-  error: 'text-red-800',
-  info: 'text-slate-700',
-  warning: 'text-amber-800',
-};
-
-const dismissColorMap: Record<ToastVariant, string> = {
-  success: 'text-green-600/60 hover:text-green-700',
-  error: 'text-red-600/60 hover:text-red-700',
-  info: 'text-slate-400 hover:text-slate-600',
-  warning: 'text-amber-600/60 hover:text-amber-700',
+const toastConfig: Record<ToastVariant, {
+  icon: typeof CheckCircleIcon;
+  iconColor: string;
+  textColor: string;
+  dismissColor: string;
+  glassClass: string;
+}> = {
+  success: {
+    icon: CheckCircleIcon,
+    iconColor: 'text-green-700',
+    textColor: 'text-green-800',
+    dismissColor: 'text-green-600/60 hover:text-green-700',
+    glassClass: 'glass-toast-success',
+  },
+  error: {
+    icon: XCircleIcon,
+    iconColor: 'text-red-700',
+    textColor: 'text-red-800',
+    dismissColor: 'text-red-600/60 hover:text-red-700',
+    glassClass: 'glass-toast-error',
+  },
+  info: {
+    icon: InfoIcon,
+    iconColor: 'text-blue-700',
+    textColor: 'text-slate-700',
+    dismissColor: 'text-slate-400 hover:text-slate-600',
+    glassClass: 'glass-toast',
+  },
+  warning: {
+    icon: WarningIcon,
+    iconColor: 'text-amber-700',
+    textColor: 'text-amber-800',
+    dismissColor: 'text-amber-600/60 hover:text-amber-700',
+    glassClass: 'glass-toast-warning',
+  },
 };
 
 export const Toast = ({ toast, onDismiss }: ToastProps) => {
-  const Icon = iconMap[toast.type];
-  const glassClass = toast.type === 'success' ? 'glass-toast-success'
-    : toast.type === 'error' ? 'glass-toast-error'
-    : toast.type === 'warning' ? 'glass-toast-warning'
-    : 'glass-toast';
+  const { icon: Icon, iconColor, textColor, dismissColor, glassClass } = toastConfig[toast.type];
 
   return (
     <div
@@ -50,12 +55,12 @@ export const Toast = ({ toast, onDismiss }: ToastProps) => {
         min-w-[300px] max-w-[400px]
       `}
     >
-      <Icon className={`w-5 h-5 flex-shrink-0 ${iconColorMap[toast.type]}`} />
-      <p className={`flex-1 text-sm ${textColorMap[toast.type]}`}>{toast.message}</p>
+      <Icon className={`w-5 h-5 flex-shrink-0 ${iconColor}`} />
+      <p className={`flex-1 text-sm ${textColor}`}>{toast.message}</p>
       <button
         type="button"
         onClick={() => onDismiss(toast.id)}
-        className={`flex-shrink-0 transition-colors ${dismissColorMap[toast.type]}`}
+        className={`flex-shrink-0 transition-colors ${dismissColor}`}
         aria-label="Dismiss"
       >
         <XIcon className="w-4 h-4" />

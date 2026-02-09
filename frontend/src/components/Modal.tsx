@@ -1,5 +1,6 @@
 import { useEffect, useCallback, useState, type ReactNode } from 'react';
 import { createPortal } from 'react-dom';
+import { XIcon } from './icons';
 
 type ModalProps = {
   isOpen: boolean;
@@ -79,14 +80,7 @@ export const Modal = ({ isOpen, onClose, title, children, preventClose = false }
               onClick={handleClose}
               aria-label="Close"
             >
-              <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                <path
-                  d="M15 5L5 15M5 5l10 10"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                />
-              </svg>
+              <XIcon width={20} height={20} />
             </button>
           )}
         </header>

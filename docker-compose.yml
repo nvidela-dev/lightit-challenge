@@ -1,3 +1,10 @@
+x-shared-env: &shared-env
+  DATABASE_URL: postgresql://postgres:postgres@postgres:5432/patient_registration?schema=public
+  REDIS_URL: redis://redis:6379
+  SMTP_HOST: mailpit
+  SMTP_PORT: 1025
+  EMAIL_FROM: noreply@patientapp.dev
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -41,11 +48,7 @@ services:
     ports:
       - "3001:3001"
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/patient_registration?schema=public
-      REDIS_URL: redis://redis:6379
-      SMTP_HOST: mailpit
-      SMTP_PORT: 1025
-      EMAIL_FROM: noreply@patientapp.dev
+      <<: *shared-env
       PORT: 3001
     depends_on:
       postgres:
@@ -63,11 +66,7 @@ services:
       dockerfile: Dockerfile
     command: ["node", "dist/workers/notification.worker.js"]
     environment:
-      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/patient_registration?schema=public
-      REDIS_URL: redis://redis:6379
-      SMTP_HOST: mailpit
-      SMTP_PORT: 1025
-      EMAIL_FROM: noreply@patientapp.dev
+      <<: *shared-env
     depends_on:
       postgres:
         condition: service_healthy

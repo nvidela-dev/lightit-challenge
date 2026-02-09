@@ -61,26 +61,32 @@ export const getPatients = async ({ page, limit }: PaginationParams) => {
   };
 };
 
-const ensureEmailNotTaken = (email: string) =>
-  prisma.patient
-    .findUnique({ where: { email }, select: { id: true } })
-    .then((existing) =>
-      existing
-        ? Promise.reject(new ConflictError('email', 'A patient with this email already exists'))
-        : Promise.resolve()
-    );
+const ensureEmailNotTaken = async (email: string) => {
+  const existing = await prisma.patient.findUnique({
+    where: { email },
+    select: { id: true },
+  });
+  if (existing) {
+    throw new ConflictError('email', 'A patient with this email already exists');
+  }
+};
 
-export const createPatient = (input: CreatePatientInput, documentUrl: string) =>
-  ensureEmailNotTaken(input.email)
-    .then(() => prisma.patient.create({ data: { ...input, documentUrl }, select: patientSelect }))
-    .then((patient) => {
-      dispatchConfirmation({
-        patientId: patient.id,
-        email: patient.email,
-        fullName: patient.fullName,
-        phoneCode: patient.phoneCode,
-        phoneNumber: patient.phoneNumber,
-        notificationPreference: patient.notificationPreference,
-      });
-      return formatPatient(patient);
-    });
+export const createPatient = async (input: CreatePatientInput, documentUrl: string) => {
+  await ensureEmailNotTaken(input.email);
+
+  const patient = await prisma.patient.create({
+    data: { ...input, documentUrl },
+    select: patientSelect,
+  });
+
+  dispatchConfirmation({
+    patientId: patient.id,
+    email: patient.email,
+    fullName: patient.fullName,
+    phoneCode: patient.phoneCode,
+    phoneNumber: patient.phoneNumber,
+    notificationPreference: patient.notificationPreference,
+  });
+
+  return formatPatient(patient);
+};
