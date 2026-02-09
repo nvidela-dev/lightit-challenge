@@ -32,7 +32,7 @@ const generatePatients = (count: number) =>
 
     return {
       fullName: `${firstName} ${lastName}`,
-      email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i > 0 ? i : ''}@email.com`,
+      email: `${firstName.toLowerCase()}.${lastName.toLowerCase()}${i > 0 ? i : ''}@gmail.com`,
       phoneCode: phoneCodes[i % phoneCodes.length],
       phoneNumber: `${Math.floor(1000000000 + Math.random() * 9000000000)}`.slice(0, 10),
       documentUrl: `/uploads/avatar-${avatarIndex}.jpg`,

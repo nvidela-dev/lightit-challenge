@@ -9,6 +9,7 @@ const mockPrisma = {
     findMany: vi.fn(),
     findUnique: vi.fn(),
     create: vi.fn(),
+    count: vi.fn(),
   },
 };
 
@@ -43,15 +44,25 @@ describe('GET /api/patients', () => {
 
   it('returns empty array when no patients exist', async () => {
     mockPrisma.patient.findMany.mockResolvedValue([]);
+    mockPrisma.patient.count.mockResolvedValue(0);
 
     const response = await request(app).get('/api/patients');
 
     expect(response.status).toBe(200);
-    expect(response.body).toEqual({ data: [] });
+    expect(response.body.data).toEqual([]);
+    expect(response.body.pagination).toEqual({
+      page: 1,
+      limit: 18,
+      total: 0,
+      totalPages: 0,
+      hasNext: false,
+      hasPrevious: false,
+    });
   });
 
   it('returns all patients with formatted dates', async () => {
     mockPrisma.patient.findMany.mockResolvedValue([samplePatient]);
+    mockPrisma.patient.count.mockResolvedValue(1);
 
     const response = await request(app).get('/api/patients');
 
@@ -62,6 +73,12 @@ describe('GET /api/patients', () => {
       fullName: samplePatient.fullName,
       email: samplePatient.email,
       createdAt: samplePatient.createdAt.toISOString(),
+    });
+    expect(response.body.pagination).toMatchObject({
+      page: 1,
+      total: 1,
+      hasNext: false,
+      hasPrevious: false,
     });
   });
 });

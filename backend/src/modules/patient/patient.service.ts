@@ -44,13 +44,17 @@ export const getPatients = async ({ page, limit }: PaginationParams) => {
     prisma.patient.count(),
   ]);
 
+  const totalPages = Math.ceil(total / limit);
+
   return {
     data: patients.map(formatPatient),
     pagination: {
       page,
       limit,
       total,
-      totalPages: Math.ceil(total / limit),
+      totalPages,
+      hasNext: page < totalPages,
+      hasPrevious: page > 1,
     },
   };
 };
