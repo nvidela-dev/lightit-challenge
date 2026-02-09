@@ -14,7 +14,10 @@ const App = () => {
         <HeroSection isCollapsed={isHeroCollapsed} onCollapseChange={setIsHeroCollapsed} />
         <div className="max-w-7xl mx-auto px-6 w-full flex-1 flex items-center transition-all duration-1000 ease-out py-8">
           <div className="w-full">
-            <PatientPage isHeroCollapsed={isHeroCollapsed} />
+            <PatientPage
+              isHeroCollapsed={isHeroCollapsed}
+              onToggleCollapse={() => setIsHeroCollapsed((prev) => !prev)}
+            />
           </div>
         </div>
       </main>

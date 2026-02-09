@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react';
 import { Button } from '../../components/Button';
 import { EmptyState } from '../../components/EmptyState';
 import { Pagination } from '../../components/Pagination';
+import { PlusIcon, ChevronUpIcon } from '../../components/icons';
 import { usePatients } from './hooks/usePatients';
 import { PatientList } from './components/PatientList';
 import { RegistrationModal } from './components/RegistrationModal';
@@ -11,9 +12,10 @@ const EXPANDED_PAGE_SIZE = 9;
 
 type PatientPageProps = {
   isHeroCollapsed: boolean;
+  onToggleCollapse: () => void;
 };
 
-export const PatientPage = ({ isHeroCollapsed }: PatientPageProps) => {
+export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPageProps) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [visualPage, setVisualPage] = useState(1);
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -86,13 +88,41 @@ export const PatientPage = ({ isHeroCollapsed }: PatientPageProps) => {
         }`}
       >
         <header className="flex items-center justify-between gap-4 mb-6 max-sm:flex-col max-sm:items-stretch">
-          <h2 className="text-xl font-semibold text-slate-800 max-sm:text-lg max-sm:text-center">
-            Registered Patients
-            <span className="ml-2 text-sm font-normal text-slate-500">
-              ({total})
+          <div className="flex items-center gap-3">
+            <h2 className="text-xl font-semibold text-slate-800 max-sm:text-lg max-sm:text-center">
+              Patients
+              <span className="ml-2 text-sm font-normal text-slate-500">
+                ({total})
+              </span>
+            </h2>
+            <div className="relative group">
+              <button
+                type="button"
+                onClick={onToggleCollapse}
+                className="flex items-center justify-center w-5 h-5 rounded-full bg-slate-200/60 hover:bg-slate-300/80 text-slate-500 transition-all duration-300"
+                aria-label={isHeroCollapsed ? 'Show banner' : 'Hide banner'}
+              >
+                <ChevronUpIcon
+                  width="10"
+                  height="10"
+                  className={`transition-transform duration-300 ${isHeroCollapsed ? 'rotate-180' : ''}`}
+                />
+              </button>
+              <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 px-2 py-1.5 bg-slate-800 text-white text-[10px] rounded-md opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none z-10">
+                {isHeroCollapsed ? 'Collapse' : 'Expand'}
+                <span className="block text-slate-400 mt-0.5">
+                  Scroll outside list to toggle
+                </span>
+                <div className="absolute left-1/2 -translate-x-1/2 -top-1 w-1.5 h-1.5 bg-slate-800 rotate-45" />
+              </div>
+            </div>
+          </div>
+          <Button onClick={handleOpenModal}>
+            <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white/20">
+              <PlusIcon width="12" height="12" />
             </span>
-          </h2>
-          <Button onClick={handleOpenModal}>Add Patient</Button>
+            Add Patient
+          </Button>
         </header>
 
         {isError && (
@@ -111,7 +141,16 @@ export const PatientPage = ({ isHeroCollapsed }: PatientPageProps) => {
             <EmptyState
               title="No patients yet"
               description="Get started by registering your first patient"
-              action={<Button onClick={handleOpenModal}>Add Patient</Button>}
+              action={(
+                <Button onClick={handleOpenModal}>
+                  <span className="flex items-center justify-center w-5 h-5 rounded-full bg-white/20">
+                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                      <path d="M6 2v8M2 6h8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
+                    </svg>
+                  </span>
+                  Add Patient
+                </Button>
+              )}
             />
           ) : (
             <PatientList patients={visiblePatients} isLoading={isLoading} />
