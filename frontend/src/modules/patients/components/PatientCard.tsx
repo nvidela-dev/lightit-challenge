@@ -24,7 +24,7 @@ export const PatientCard = ({ patient }: PatientCardProps) => {
 
   return (
     <article
-      className="glass rounded-xl overflow-hidden cursor-pointer transition-all duration-150 hover:shadow-lg hover:-translate-y-0.5 hover:bg-white/90"
+      className="glass-card rounded-xl overflow-hidden cursor-pointer transition-all duration-150 hover:shadow-xl hover:-translate-y-1 hover:bg-white"
       onClick={toggleExpand}
       onKeyDown={(e) => e.key === 'Enter' && toggleExpand()}
       role="button"
