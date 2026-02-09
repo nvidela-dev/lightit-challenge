@@ -1,0 +1,20 @@
+{
+  "name": "patient-registration-e2e",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "postinstall": "prisma generate",
+    "test": "playwright test",
+    "test:ui": "playwright test --ui",
+    "test:debug": "playwright test --debug",
+    "test:headed": "playwright test --headed",
+    "report": "playwright show-report"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.52.0",
+    "@prisma/client": "^6.3.1",
+    "@types/node": "^22.0.0",
+    "prisma": "^6.3.1",
+    "typescript": "^5.7.3"
+  }
+}

@@ -1,5 +1,6 @@
 .PHONY: help install dev up down logs build clean migrate seed mail db-reset test coverage worker \
-        api-health api-patients api-create-patient
+        api-health api-patients api-create-patient \
+        e2e-install e2e e2e-ui e2e-headed e2e-debug e2e-report
 
 # Default target
 help:
@@ -21,6 +22,14 @@ help:
 	@echo "  make test       - Run all tests (backend + frontend)"
 	@echo "  make coverage   - Run tests with coverage reports"
 	@echo "  make worker     - Start notification worker"
+	@echo ""
+	@echo "E2E Testing:"
+	@echo "  make e2e-install - Install E2E dependencies and Playwright"
+	@echo "  make e2e         - Run E2E tests"
+	@echo "  make e2e-ui      - Run E2E tests with UI mode"
+	@echo "  make e2e-headed  - Run E2E tests with visible browser"
+	@echo "  make e2e-debug   - Run E2E tests in debug mode"
+	@echo "  make e2e-report  - Show E2E test report"
 	@echo ""
 	@echo "API Testing:"
 	@echo "  make api-health         - Check API health endpoint"
@@ -134,3 +143,32 @@ api-create-patient:
 		-F "phoneCode=+1" \
 		-F "phoneNumber=5551234567" \
 		-F "document=@backend/uploads/test-image.jpg" | jq .
+
+# =============================================================================
+# E2E Testing
+# =============================================================================
+
+# Install E2E dependencies
+e2e-install:
+	cd e2e && npm install
+	cd e2e && npx playwright install chromium
+
+# Run E2E tests (starts dev environment automatically)
+e2e:
+	cd e2e && npm test
+
+# Run E2E tests with UI mode
+e2e-ui:
+	cd e2e && npm run test:ui
+
+# Run E2E tests in headed mode (visible browser)
+e2e-headed:
+	cd e2e && npm run test:headed
+
+# Run E2E tests in debug mode
+e2e-debug:
+	cd e2e && npm run test:debug
+
+# Show E2E test report
+e2e-report:
+	cd e2e && npm run report
