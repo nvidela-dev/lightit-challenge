@@ -1,4 +1,4 @@
-.PHONY: help install dev up down logs build clean migrate seed mail db-reset test worker \
+.PHONY: help install dev up down logs build clean migrate seed mail db-reset test coverage worker \
         api-health api-patients api-create-patient
 
 # Default target
@@ -18,7 +18,8 @@ help:
 	@echo "  make db-reset   - Reset database (drop, migrate, seed)"
 	@echo ""
 	@echo "  make mail       - Open Mailpit UI in browser"
-	@echo "  make test       - Run backend tests"
+	@echo "  make test       - Run all tests (backend + frontend)"
+	@echo "  make coverage   - Run tests with coverage reports"
 	@echo "  make worker     - Start notification worker"
 	@echo ""
 	@echo "API Testing:"
@@ -101,6 +102,12 @@ mail:
 # Run tests
 test:
 	cd backend && npm test
+	cd frontend && npm test
+
+# Run tests with coverage
+coverage:
+	cd backend && npm run test:coverage
+	cd frontend && npm run test:coverage
 
 # Start notification worker
 worker:
