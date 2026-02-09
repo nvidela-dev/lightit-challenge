@@ -12,7 +12,7 @@ export const ToastContainer = () => {
     <div
       aria-live="polite"
       aria-label="Notifications"
-      className="fixed bottom-6 right-6 z-50 flex flex-col-reverse gap-3"
+      className="fixed bottom-24 right-6 z-50 flex flex-col-reverse gap-3"
     >
       {toasts.map((toast) => (
         <Toast key={toast.id} toast={toast} onDismiss={removeToast} />
