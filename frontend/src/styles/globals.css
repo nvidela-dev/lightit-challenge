@@ -1,8 +1,12 @@
 @import "tailwindcss";
 
 @theme {
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
+  --color-primary: #7083A8;
+  --color-primary-hover: #5E7199;
+  --color-primary-active: #536488;
+  --color-primary-dark: #5F6F8F;
+  --color-primary-dark-hover: #506082;
+  --color-primary-dark-active: #475574;
 
   --animate-spin-fast: spin 0.6s linear infinite;
   --animate-fade-in: fadeIn 250ms ease forwards;
@@ -62,10 +66,18 @@ body {
 }
 
 .glass-blue {
-  background: linear-gradient(135deg, rgba(23, 37, 84, 0.9) 0%, rgba(30, 58, 138, 0.85) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: linear-gradient(135deg, rgba(95, 111, 143, 0.9) 0%, rgba(80, 96, 130, 0.85) 100%);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-header {
+  background: rgba(112, 131, 168, 0.35);
+  backdrop-filter: blur(12px) saturate(1.2);
+  -webkit-backdrop-filter: blur(12px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.18);
 }
 
 .glass-section {
@@ -85,9 +97,18 @@ body {
 }
 
 .glass-button {
-  background: linear-gradient(135deg, rgba(23, 37, 84, 0.95) 0%, rgba(30, 58, 138, 0.9) 100%);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  box-shadow: 0 2px 8px rgba(23, 37, 84, 0.3);
+  background: rgba(95, 111, 143, 0.85);
+  backdrop-filter: blur(8px) saturate(1.2);
+  -webkit-backdrop-filter: blur(8px) saturate(1.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 8px rgba(95, 111, 143, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.glass-button:hover {
+  background: rgba(80, 96, 130, 0.9);
+}
+
+.glass-button:active,
+.glass-button:focus {
+  background: rgba(71, 85, 116, 0.95);
 }

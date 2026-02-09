@@ -40,7 +40,7 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
   const baseButtonClass =
     'flex items-center justify-center min-w-[40px] h-10 px-3 text-sm font-medium rounded-lg transition-all duration-150';
   const activeClass = 'glass-button text-white';
-  const inactiveClass = 'text-blue-950 hover:bg-blue-950/10';
+  const inactiveClass = 'text-gray-500 hover:bg-gray-100';
   const disabledClass = 'opacity-40 cursor-not-allowed';
 
   return (
