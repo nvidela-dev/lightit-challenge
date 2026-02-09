@@ -25,7 +25,7 @@ export class NotFoundError extends AppError {
 
 export class ConflictError extends AppError {
   constructor(field: string, message: string) {
-    super(400, message, { [field]: message });
+    super(409, message, { [field]: message });
     this.name = 'ConflictError';
   }
 }
