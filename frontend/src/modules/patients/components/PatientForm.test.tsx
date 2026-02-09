@@ -7,6 +7,14 @@ const mockOnSubmit = vi.fn();
 const createJpgFile = () =>
   new File(['test'], 'test.jpg', { type: 'image/jpeg' });
 
+const getFileInput = (): HTMLInputElement => {
+  const input = document.querySelector('input[type="file"]');
+  if (!(input instanceof HTMLInputElement)) {
+    throw new Error('File input not found');
+  }
+  return input;
+};
+
 describe('PatientForm', () => {
   beforeEach(() => {
     mockOnSubmit.mockClear();
@@ -117,7 +125,7 @@ describe('PatientForm', () => {
     await user.type(screen.getByPlaceholderText('john.doe@gmail.com'), 'john@gmail.com');
     await user.type(screen.getByPlaceholderText('1234567890'), '1234567890');
 
-    const fileInput = document.querySelector('input[type="file"]') as HTMLInputElement;
+    const fileInput = getFileInput();
     await user.upload(fileInput, createJpgFile());
 
     await user.click(screen.getByRole('button', { name: 'Register Patient' }));
@@ -126,7 +134,10 @@ describe('PatientForm', () => {
       expect(mockOnSubmit).toHaveBeenCalledTimes(1);
     });
 
-    const formData = mockOnSubmit.mock.calls[0][0] as FormData;
+    const formData = mockOnSubmit.mock.calls[0][0];
+    if (!(formData instanceof FormData)) {
+      throw new Error('Expected FormData');
+    }
     expect(formData.get('fullName')).toBe('John Doe');
     expect(formData.get('email')).toBe('john@gmail.com');
     expect(formData.get('phoneNumber')).toBe('1234567890');

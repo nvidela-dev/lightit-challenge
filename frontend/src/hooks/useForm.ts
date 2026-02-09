@@ -10,13 +10,13 @@ type UseFormOptions<T extends Record<string, unknown>> = {
 const formatZodErrors = <T extends Record<string, unknown>>(
   error: ZodError<T>
 ): Partial<Record<keyof T, string>> =>
-  error.issues.reduce(
-    (acc, issue) => ({
-      ...acc,
-      [issue.path[0] as keyof T]: issue.message,
-    }),
-    {} as Partial<Record<keyof T, string>>
-  );
+  error.issues.reduce<Partial<Record<keyof T, string>>>((acc, issue) => {
+    const key = issue.path[0];
+    if (typeof key === 'string') {
+      return { ...acc, [key]: issue.message };
+    }
+    return acc;
+  }, {});
 
 export const useForm = <T extends Record<string, unknown>>({
   initialValues,

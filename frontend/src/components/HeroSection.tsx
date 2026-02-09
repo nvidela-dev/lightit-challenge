@@ -11,9 +11,8 @@ export const HeroSection = ({ isCollapsed, onCollapseChange }: HeroSectionProps)
   useEffect(() => {
     const handleWheel = (e: WheelEvent) => {
       // Check if scrolling inside a scrollable container
-      const target = e.target as HTMLElement;
-      const scrollContainer = target.closest('[data-scroll-container]');
-      if (scrollContainer) {
+      const target = e.target;
+      if (target instanceof Element && target.closest('[data-scroll-container]')) {
         return;
       }
 
