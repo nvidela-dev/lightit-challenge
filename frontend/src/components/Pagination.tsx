@@ -1,4 +1,4 @@
-import { ChevronLeftIcon, ChevronRightIcon } from './icons';
+import { ChevronLeftIcon, ChevronRightIcon, ChevronsLeftIcon, ChevronsRightIcon } from './icons';
 
 type PaginationProps = {
   currentPage: number;
@@ -49,6 +49,15 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
     <nav className="flex items-center justify-center gap-1" aria-label="Pagination">
       <button
         type="button"
+        onClick={() => onPageChange(1)}
+        disabled={currentPage === 1}
+        className={`${baseButtonClass} ${currentPage === 1 ? disabledClass : inactiveClass}`}
+        aria-label="First page"
+      >
+        <ChevronsLeftIcon width="16" height="16" />
+      </button>
+      <button
+        type="button"
         onClick={() => onPageChange(currentPage - 1)}
         disabled={currentPage === 1}
         className={`${baseButtonClass} ${currentPage === 1 ? disabledClass : inactiveClass}`}
@@ -86,6 +95,15 @@ export const Pagination = ({ currentPage, totalPages, onPageChange }: Pagination
         aria-label="Next page"
       >
         <ChevronRightIcon width="16" height="16" />
+      </button>
+      <button
+        type="button"
+        onClick={() => onPageChange(effectiveTotalPages)}
+        disabled={currentPage === effectiveTotalPages}
+        className={`${baseButtonClass} ${currentPage === effectiveTotalPages ? disabledClass : inactiveClass}`}
+        aria-label="Last page"
+      >
+        <ChevronsRightIcon width="16" height="16" />
       </button>
     </nav>
   );

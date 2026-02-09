@@ -15,6 +15,13 @@ const formatDate = (dateString: string): string =>
 const formatPhone = (code: string, number: string): string =>
   `${code} ${number.replace(/(\d{3})(\d{3})(\d{4})/, '$1 $2 $3')}`;
 
+const capitalizeWords = (str: string): string =>
+  str
+    .toLowerCase()
+    .split(' ')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+
 export const PatientCard = ({ patient }: PatientCardProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -38,7 +45,7 @@ export const PatientCard = ({ patient }: PatientCardProps) => {
           className="w-12 h-12 object-cover rounded-md flex-shrink-0"
         />
         <div className="flex-1 min-w-0">
-          <h3 className="text-[15px] font-semibold text-slate-900 truncate">{patient.fullName}</h3>
+          <h3 className="text-[15px] font-semibold text-slate-900 truncate">{capitalizeWords(patient.fullName)}</h3>
           <p className="text-sm text-slate-500 mt-0.5">{formatDate(patient.createdAt)}</p>
         </div>
         <span
