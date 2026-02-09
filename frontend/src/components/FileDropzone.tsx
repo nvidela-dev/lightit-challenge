@@ -36,8 +36,7 @@ export const FileDropzone = ({
 
   const handleFile = useCallback(
     (file: File) => {
-      const validationError = validateFile(file);
-      if (validationError) {
+      if (validateFile(file)) {
         onChange(null);
         setPreview(null);
         return;

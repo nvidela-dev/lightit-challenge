@@ -1,5 +1,5 @@
-import type { Patient } from '../../types';
-import { PatientCard } from '../PatientCard';
+import type { Patient } from '../types';
+import { PatientCard } from './PatientCard';
 
 type PatientListProps = {
   patients: Patient[];

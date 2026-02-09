@@ -1,10 +1,10 @@
 import { useState, useCallback } from 'react';
-import { FormField } from '../../../../components/FormField';
-import { PhoneInput } from '../../../../components/PhoneInput';
-import { FileDropzone } from '../../../../components/FileDropzone';
-import { Button } from '../../../../components/Button';
-import { useForm } from '../../../../hooks/useForm';
-import { createPatientSchema, type CreatePatientFormValues } from '../../schemas';
+import { FormField } from '../../../components/FormField';
+import { PhoneInput } from '../../../components/PhoneInput';
+import { FileDropzone } from '../../../components/FileDropzone';
+import { Button } from '../../../components/Button';
+import { useForm } from '../../../hooks/useForm';
+import { createPatientSchema, type CreatePatientFormValues } from '../schemas';
 
 type PatientFormProps = {
   onSubmit: (formData: FormData) => Promise<void>;

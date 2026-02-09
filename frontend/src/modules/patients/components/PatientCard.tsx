@@ -1,5 +1,5 @@
 import { useState, useCallback } from 'react';
-import type { Patient } from '../../types';
+import type { Patient } from '../types';
 
 type PatientCardProps = {
   patient: Patient;

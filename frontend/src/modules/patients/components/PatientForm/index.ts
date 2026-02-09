@@ -1,1 +1,0 @@
-export { PatientForm } from './PatientForm';

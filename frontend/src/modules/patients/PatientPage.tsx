@@ -1,7 +1,7 @@
 import { useState, useCallback } from 'react';
 import { Button } from '../../components/Button';
 import { EmptyState } from '../../components/EmptyState';
-import { usePatients } from './hooks';
+import { usePatients } from './hooks/usePatients';
 import { PatientList } from './components/PatientList';
 import { RegistrationModal } from './components/RegistrationModal';
 

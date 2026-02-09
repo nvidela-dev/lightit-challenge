@@ -1,4 +1,4 @@
-import { PatientPage } from './modules/patients';
+import { PatientPage } from './modules/patients/PatientPage';
 
 function App() {
   return (
