@@ -34,14 +34,14 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
     return () => clearTimeout(timer);
   }, [isHeroCollapsed]);
 
-  // Animate page changes
+  // Reset transition when data finishes loading
   useEffect(() => {
-    if (!isLoading) {
+    if (!isFetching) {
       const timer = setTimeout(() => setIsTransitioning(false), 50);
       return () => clearTimeout(timer);
     }
     return undefined;
-  }, [isLoading, visualPage]);
+  }, [isFetching]);
 
   // Calculate visible patients based on collapsed state
   const visiblePatients = useMemo(() => {
