@@ -37,6 +37,7 @@
     <li><a href="#usage">Usage</a></li>
     <li><a href="#api-reference">API Reference</a></li>
     <li><a href="#testing">Testing</a></li>
+    <li><a href="#e2e-testing">E2E Testing</a></li>
     <li><a href="#docker">Docker</a></li>
   </ol>
 </details>
@@ -68,6 +69,10 @@ The application features a glass-morphism UI design, drag-and-drop file uploads,
 **Backend**
 
 [![Node.js][Node.js]][Node-url] [![Express][Express]][Express-url] [![Prisma][Prisma]][Prisma-url] [![BullMQ][BullMQ]][BullMQ-url] [![PostgreSQL][PostgreSQL]][PostgreSQL-url] [![Redis][Redis]][Redis-url]
+
+**Testing**
+
+[![Vitest][Vitest]][Vitest-url] [![Playwright][Playwright]][Playwright-url]
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -268,6 +273,43 @@ Coverage reports are generated in `backend/coverage/` and `frontend/coverage/`.
 
 
 
+<!-- E2E TESTING -->
+## E2E Testing
+
+End-to-end tests are built with [Playwright](https://playwright.dev/) and cover all user-facing flows.
+
+### Setup
+
+```sh
+# Install Playwright and dependencies (first time only)
+make e2e-install
+```
+
+### Running Tests
+
+| Command           | Description                              |
+|-------------------|------------------------------------------|
+| `make e2e`        | Run all E2E tests                        |
+| `make e2e-ui`     | Run tests with interactive UI mode       |
+| `make e2e-headed` | Run tests with visible browser           |
+| `make e2e-debug`  | Run tests in debug mode                  |
+| `make e2e-report` | Open HTML test report                    |
+
+### Test Coverage
+
+| Suite                | Tests | Description                                      |
+|----------------------|-------|--------------------------------------------------|
+| Patient Registration | 7     | Form validation, submission, duplicate handling  |
+| Patient Listing      | 4     | Empty state, pagination, hero collapse           |
+| Email Notifications  | 2     | Confirmation email via Mailpit                   |
+| Error Handling       | 3     | API errors, invalid file types                   |
+
+Tests verify the complete flow from UI interaction through API to database and email delivery.
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+
+
 <!-- DOCKER -->
 ## Docker
 
@@ -322,3 +364,7 @@ This builds a multi-stage Docker image that:
 [PostgreSQL-url]: https://www.postgresql.org/
 [Redis]: https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white
 [Redis-url]: https://redis.io/
+[Vitest]: https://img.shields.io/badge/Vitest-6E9F18?style=for-the-badge&logo=vitest&logoColor=white
+[Vitest-url]: https://vitest.dev/
+[Playwright]: https://img.shields.io/badge/Playwright-2EAD33?style=for-the-badge&logo=playwright&logoColor=white
+[Playwright-url]: https://playwright.dev/
