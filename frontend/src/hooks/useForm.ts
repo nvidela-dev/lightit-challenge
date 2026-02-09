@@ -45,15 +45,6 @@ export const useForm = <T extends Record<string, unknown>>({
     [values, touched, validate]
   );
 
-  const setFieldValue = useCallback(
-    (field: keyof T, value: unknown) => {
-      const newValues = { ...values, [field]: value };
-      setValues(newValues);
-      if (touched) setErrors(validate(newValues));
-    },
-    [values, touched, validate]
-  );
-
   const handleSubmit = useCallback(
     (e: FormEvent) => {
       e.preventDefault();
@@ -83,7 +74,6 @@ export const useForm = <T extends Record<string, unknown>>({
     isSubmitting,
     handleChange,
     handleSubmit,
-    setFieldValue,
     reset,
   };
 };

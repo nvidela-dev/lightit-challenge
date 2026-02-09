@@ -2,7 +2,7 @@ import { useState, useCallback } from 'react';
 import { Modal } from '../../../components/Modal';
 import { Button } from '../../../components/Button';
 import { PatientForm } from './PatientForm';
-import { useCreatePatient } from '../hooks/useCreatePatient';
+import { useCreatePatient } from '../hooks/usePatients';
 import { ApiError } from '../../../api/client';
 
 type RegistrationModalProps = {
