@@ -105,6 +105,7 @@ export const FileDropzone = ({
             type="button"
             className="flex items-center justify-center w-7 h-7 text-slate-400 hover:text-white hover:bg-red-600 rounded-md transition-all duration-150"
             onClick={handleRemove}
+            aria-label="Remove file"
           >
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
               <path d="M12 4L4 12M4 4l8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -124,6 +125,10 @@ export const FileDropzone = ({
           onDragLeave={handleDragLeave}
           onDrop={handleDrop}
           onClick={handleClick}
+          onKeyDown={(e) => e.key === 'Enter' && handleClick()}
+          role="button"
+          tabIndex={0}
+          aria-label="Upload file"
         >
           <div className="text-slate-400 mb-2">
             <svg width="32" height="32" viewBox="0 0 32 32" fill="none">

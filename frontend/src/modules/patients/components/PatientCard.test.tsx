@@ -38,7 +38,7 @@ describe('PatientCard', () => {
     const user = userEvent.setup();
     render(<PatientCard patient={mockPatient} />);
 
-    await user.click(screen.getByRole('article'));
+    await user.click(screen.getByRole('button'));
 
     const detailsSection = screen.getByText('john.doe@gmail.com').parentElement?.parentElement;
     expect(detailsSection).toHaveClass('max-h-24', 'opacity-100');
@@ -48,11 +48,11 @@ describe('PatientCard', () => {
     const user = userEvent.setup();
     render(<PatientCard patient={mockPatient} />);
 
-    await user.click(screen.getByRole('article'));
+    await user.click(screen.getByRole('button'));
     const detailsSection = screen.getByText('john.doe@gmail.com').parentElement?.parentElement;
     expect(detailsSection).toHaveClass('max-h-24');
 
-    await user.click(screen.getByRole('article'));
+    await user.click(screen.getByRole('button'));
     expect(detailsSection).toHaveClass('max-h-0');
   });
 
@@ -60,10 +60,10 @@ describe('PatientCard', () => {
     const user = userEvent.setup();
     render(<PatientCard patient={mockPatient} />);
 
-    const chevron = screen.getByRole('article').querySelector('span svg')?.parentElement;
+    const chevron = screen.getByRole('button').querySelector('span svg')?.parentElement;
     expect(chevron).not.toHaveClass('rotate-180');
 
-    await user.click(screen.getByRole('article'));
+    await user.click(screen.getByRole('button'));
     expect(chevron).toHaveClass('rotate-180');
   });
 
@@ -71,7 +71,7 @@ describe('PatientCard', () => {
     const user = userEvent.setup();
     render(<PatientCard patient={mockPatient} />);
 
-    await user.click(screen.getByRole('article'));
+    await user.click(screen.getByRole('button'));
     expect(screen.getByText('john.doe@gmail.com')).toBeInTheDocument();
   });
 
@@ -79,7 +79,7 @@ describe('PatientCard', () => {
     const user = userEvent.setup();
     render(<PatientCard patient={mockPatient} />);
 
-    await user.click(screen.getByRole('article'));
+    await user.click(screen.getByRole('button'));
     expect(screen.getByText('+1 555 123 4567')).toBeInTheDocument();
   });
 });

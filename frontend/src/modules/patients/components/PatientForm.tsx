@@ -83,10 +83,10 @@ export const PatientForm = ({ onSubmit, isSubmitting = false }: PatientFormProps
         error={errors.phoneCode || errors.phoneNumber}
       />
 
-      <div className="flex flex-col gap-1.5">
-        <label className="text-sm font-medium text-slate-900">Document Photo</label>
+      <fieldset className="flex flex-col gap-1.5">
+        <legend className="text-sm font-medium text-slate-900">Document Photo</legend>
         <FileDropzone value={file} onChange={handleFileChange} error={showFileError} />
-      </div>
+      </fieldset>
 
       <Button type="submit" loading={isSubmitting} className="w-full mt-2">
         Register Patient
