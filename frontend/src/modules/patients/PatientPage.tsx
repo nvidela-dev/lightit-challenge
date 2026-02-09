@@ -24,7 +24,7 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
 
   const backendPage = isHeroCollapsed ? visualPage : Math.ceil(visualPage / 2);
   const { data, isLoading, isFetching, isError } = usePatients({ page: backendPage, limit: BACKEND_PAGE_SIZE });
-  const showSkeleton = isLoading || isFetching;
+  const showSkeleton = isLoading || isFetching || isError;
 
   // Reset to page 1 when collapse state changes
   useEffect(() => {
@@ -77,7 +77,7 @@ export const PatientPage = ({ isHeroCollapsed, onToggleCollapse }: PatientPagePr
   }, []);
 
   const total = data?.pagination?.total ?? 0;
-  const isEmpty = !showSkeleton && visiblePatients.length === 0;
+  const isEmpty = !showSkeleton && !isError && visiblePatients.length === 0;
   const skeletonCount = isHeroCollapsed ? BACKEND_PAGE_SIZE : EXPANDED_PAGE_SIZE;
 
   return (
